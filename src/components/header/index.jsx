@@ -4,7 +4,7 @@ import * as C from './styles';
 export const Header = () => {
     return (
 
-        <C.Header>AGENDE SEU HORÁRIO</C.Header>
+        <C.Header>Academia Residencial do Lago</C.Header>
 
     )
 }

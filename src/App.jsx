@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Header } from './components/header';
+import { Horarios } from './components/horarios';
 import Global from "./GlobalStyles";
 
 function App() {
@@ -8,8 +9,7 @@ function App() {
     <div className="App">
       <Global/>
       <Header/>
-      <h3>Hello World</h3>
-      <p>Agende seu horário.</p>
+      <Horarios/>
     </div>
   )
 }

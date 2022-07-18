@@ -8,6 +8,7 @@ export const Organize = styled.div`
     flex-direction: column;
     align-items:center;
     justify-content:space-between;
+    /* background-color:grey; */
 `;
 export const horas = styled.h4`
     display:flex;
@@ -23,7 +24,7 @@ export const agendamentos = styled.div`
     position:relative;
     bottom:10px;
     border-radius: 50%;
-    background-color:blue;
+    background-color:#307e9c;
     display:flex;
     justify-content:center;
     align-items:center;

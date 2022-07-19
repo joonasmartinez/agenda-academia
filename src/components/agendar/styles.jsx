@@ -6,12 +6,15 @@ export const Agendar = styled.div`
     background-color:white;
     display:flex;
     flex-direction:column;
+    z-index:0;
+    min-width: 300px;
 
     @media screen and (max-width: 500px) {
         width:100%;
     }
 
     @media screen and (min-width: 500px) {
+        width:25%;
         height: 25%;
         top:50%;
     }
@@ -26,11 +29,13 @@ export const align = styled.div`
     align-items:center;
     position:fixed;
     background-color: rgba(0, 0, 0, 0.05);
+    z-index:1;
+    cursor: pointer;
 
 `
 
 export const Input = styled.input`
-
+    height: 2em;
 `
 
 export const Header = styled.header`
@@ -47,6 +52,10 @@ export const Section = styled.section`
     padding: 15px;
     border-top: 0.5px groove #6e6e6e60;
     border-bottom: 0.5px groove #6e6e6e60;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    flex-wrap:wrap;
 `
 export const Footer = styled.footer`
     width:100%;

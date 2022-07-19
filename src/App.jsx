@@ -8,6 +8,7 @@ import { Agendar } from './components/agendar';
 function App() {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [data, setData] = useState()
   useEffect(()=>{
     console.log(isOpenModal)
   }, [isOpenModal])
@@ -19,13 +20,18 @@ function App() {
     setIsOpenModal(state)
   }
 
+  const getData = (info)=>{
+    setData(info);
+    console.log(info)
+  }
+
   return (
     <div className="App">
       <Global/>
       <Header/>
       <Dia/>
-      <Horarios Modal={ openModal }/>
-      {isOpenModal ? <Agendar  casa={'44'} nome={'João Rodrigues'} horario={'13:00'} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
+      <Horarios Modal={ openModal } getData={getData}/>
+      {isOpenModal ? <Agendar  casa={'44'} nome={'João Rodrigues'} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
     </div>
   )
 }

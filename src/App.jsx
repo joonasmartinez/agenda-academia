@@ -12,9 +12,8 @@ function App() {
       <Global/>
       <Header/>
       <Dia/>
-      <Horarios>
-          <Agendar/>
-      </Horarios>
+      <Horarios/>
+      <Agendar/>
     </div>
   )
 }

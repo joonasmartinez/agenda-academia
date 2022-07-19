@@ -29,7 +29,7 @@ export const Horarios = ({Agendar}) => {
 
     return (
         <>
-           <C.Organize>{horas.map(item => <C.horas onClick={()=>{Agendar}} key={item.hora}>{item.hora}<C.agendamentos>{item.agendados.length}</C.agendamentos></C.horas> )}</C.Organize>
+           <C.Organize>{horas.map(item => <C.horas onClick={()=>{Agendar()}} key={item.hora}>{item.hora}<C.agendamentos>{item.agendados.length}</C.agendamentos></C.horas> )}</C.Organize>
         </>
         
 

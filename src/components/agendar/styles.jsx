@@ -3,22 +3,31 @@ import styled from "styled-components";
 export const Agendar = styled.div`
     width:50%;
     height:50%;
+    min-width: 300px;
     background-color:white;
     display:flex;
     flex-direction:column;
     z-index:0;
-    min-width: 300px;
-
+    animation: 1s entrada ease;
+    
     @media screen and (max-width: 500px) {
         width:100%;
     }
-
+    
     @media screen and (min-width: 500px) {
         width:25%;
         height: 25%;
         top:50%;
     }
-
+    @keyframes entrada {
+        from{
+            opacity: 0;
+        }
+        to{
+            opacity: 1;
+        }
+    }
+    
 `;
 
 export const align = styled.div`
@@ -30,7 +39,6 @@ export const align = styled.div`
     position:fixed;
     background-color: rgba(0, 0, 0, 0.05);
     z-index:1;
-    cursor: pointer;
 
 `
 

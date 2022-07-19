@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import * as C from './styles';
 
-export const Horarios = ({Agendar}) => {
+export const Horarios = ({Modal}) => {
     const [horas, setHoras] = useState(
         [
             {hora:'06:00', agendados:[{nome:'', casa:''}, {nome:'', casa:''}, {nome:'', casa:''}]},
@@ -27,9 +27,10 @@ export const Horarios = ({Agendar}) => {
         ]
         );
 
+
     return (
         <>
-           <C.Organize>{horas.map(item => <C.horas onClick={()=>{Agendar()}} key={item.hora}>{item.hora}<C.agendamentos>{item.agendados.length}</C.agendamentos></C.horas> )}</C.Organize>
+           <C.Organize>{horas.map(item => <C.horas onClick={()=>{Modal(true)}} key={item.hora}>{item.hora}<C.agendamentos>{item.agendados.length}</C.agendamentos></C.horas> )}</C.Organize>
         </>
         
 

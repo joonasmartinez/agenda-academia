@@ -18,10 +18,20 @@ export const horas = styled.h4`
     width:20%;
     height:100%;
     border-radius:10px;
+    border-left: 1px solid #307e9c;
     margin:5px;
     box-shadow:0 0 3px 0.5px #00000028;
     cursor: pointer;
     :hover{
+        animation: borda 0.3s forwards ease;
+        @keyframes borda {
+            from{
+                border-left:1px solid #307e9c;
+
+            }to{
+                border-left:5px solid #307e9c;
+            }
+        }
         color:grey;
     }
 

@@ -4,13 +4,22 @@ import { Horarios } from './components/horarios';
 import { Dia } from './components/dia';
 import Global from "./GlobalStyles";
 import { Agendar } from './components/agendar';
+import { Registrar } from './components/registrar';
 
 function App() {
 
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [user, setUser] = useState({nome:'', casa:''})
   const [data, setData] = useState()
+  const [register, setRegister] = useState(false)
   useEffect(()=>{
-    console.log(isOpenModal)
+
+    if(localStorage.getItem(user)) {
+      return console.log("Existe")
+    }else{
+      setRegister(true);
+    }
+    console.log(user)
   }, [isOpenModal])
 
   const openModal = (state)=>{
@@ -22,7 +31,6 @@ function App() {
 
   const getData = (info)=>{
     setData(info);
-    console.log(info)
   }
 
   return (
@@ -32,6 +40,7 @@ function App() {
       <Dia/>
       <Horarios Modal={ openModal } getData={getData}/>
       {isOpenModal ? <Agendar  casa={'44'} nome={'João Rodrigues'} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
+      {register ? <Registrar/> : null}
     </div>
   )
 }

@@ -9,7 +9,6 @@ export const Registrar = ( {Registro}) => {
     useEffect(() =>{
         if(localStorage.getItem('user')){
             let user = JSON.parse(localStorage.getItem('user'))
-            console.log("Tem", user)
             setNome(user.nome)
             setCasa(user.casa)
         }

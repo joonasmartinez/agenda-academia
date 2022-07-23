@@ -12,9 +12,21 @@ export const Organize = styled.div`
 `;
 export const horas = styled.h4`
     display:flex;
+    align-items:center;
+    justify-content:center;
+    background-color:white;
+    width:20%;
+    height:100%;
+    border-radius:10px;
+    margin:5px;
+    box-shadow:0 0 3px 0.5px #00000028;
     cursor: pointer;
     :hover{
         color:grey;
+    }
+
+    @media screen and (max-width: 500px) {
+        width:80%;
     }
 `;
 

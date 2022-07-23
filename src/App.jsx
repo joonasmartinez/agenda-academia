@@ -14,13 +14,12 @@ function App() {
   const [register, setRegister] = useState(false)
   useEffect(()=>{
 
-    if(localStorage.getItem(user)) {
-      return console.log("Existe")
+    if(localStorage.getItem('user')) {
+      return setRegister(false);
     }else{
       setRegister(true);
     }
-    console.log(user)
-  }, [isOpenModal])
+  }, [])
 
   const openModal = (state)=>{
     setIsOpenModal(state)
@@ -33,14 +32,22 @@ function App() {
     setData(info);
   }
 
+  const createUser = ({nome, casa}) =>{
+    setUser({nome, casa})
+    localStorage.setItem('user', JSON.stringify({nome, casa}))
+    setRegister(false);
+  }
+
+
+
   return (
     <div className="App">
       <Global/>
       <Header/>
       <Dia/>
       <Horarios Modal={ openModal } getData={getData}/>
-      {isOpenModal ? <Agendar  casa={'44'} nome={'João Rodrigues'} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
-      {register ? <Registrar/> : null}
+      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
+      {register ? <Registrar Registro={ createUser }/> : null}
     </div>
   )
 }

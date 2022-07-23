@@ -31,6 +31,7 @@ export const Agendar = styled.div`
 `;
 
 export const align = styled.div`
+font-size: 1em;
     width: 100vw;
     height:100vh;
     display:flex;
@@ -43,7 +44,29 @@ export const align = styled.div`
 `
 
 export const Input = styled.input`
+    width: 30%;
     height: 2em;
+    outline:none;
+    border: none;
+    border-bottom: 1px solid grey;
+
+    :hover{
+        
+    }
+    :focus{
+        animation:expandir 0.5s forwards ease;
+
+        @keyframes expandir {
+            from{
+                width: 30%;
+                border-bottom: 1px solid black;
+            }
+            to{
+                width: 60%;
+                border-bottom: 1px solid black;
+            }
+        }
+    }
 `
 
 export const Header = styled.header`
@@ -63,6 +86,7 @@ export const Section = styled.section`
     display:flex;
     flex-direction:column;
     justify-content:space-around;
+    align-items:center;
     flex-wrap:wrap;
 `
 export const Footer = styled.footer`

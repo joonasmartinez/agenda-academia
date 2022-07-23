@@ -1,7 +1,8 @@
-import React from 'react';
+import {React, useState} from 'react';
 import * as C from './styles';
 
 export const Agendar = ({casa, nome, horario, ModalAgenda}) => {
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
     return (
         <C.align >
             <C.Agendar >
@@ -11,8 +12,8 @@ export const Agendar = ({casa, nome, horario, ModalAgenda}) => {
                 </C.Header>
 
                 <C.Section>
-                    <label>{`Seu nome: ${nome}`}</label>
-                    <label>{`Sua casa: ${casa}`}</label>
+                    <label>{`Seu nome: ${user.nome}`}</label>
+                    <label>{`Sua casa: ${user.casa}`}</label>
                     <label>{`Agendar horário: ${horario}`}</label>
                     <label>Acompanhante: </label>
                     <C.Input placeholder='Nome(s) acompanhante(s)'/>

@@ -1,10 +1,12 @@
 import React from 'react';
 import * as C from './styles';
 
-export const Header = () => {
+export const Header = ({Registrar}) => {
     return (
-
-        <C.Header>Academia Residencial do Lago</C.Header>
+        <>
+            
+            <C.Header><C.Edit onClick={()=>{Registrar()}}>Alterar</C.Edit> Academia Residencial do Lago</C.Header>
+        </>
 
     )
 }

@@ -1,11 +1,25 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as C from './styles';
 
 export const Registrar = ( {Registro}) => {
 
     const [nome, setNome] = useState('')
     const [casa, setCasa] = useState('')
+
+    useEffect(() =>{
+        if(localStorage.getItem('user')){
+            let user = JSON.parse(localStorage.getItem('user'))
+            console.log("Tem", user)
+            setNome(user.nome)
+            setCasa(user.casa)
+        }
+    }, [])
+
+    const check = ()=>{
+        if(nome != '' && casa != ''){
+            return Registro({nome, casa})
+        }
+    }
 
     return (
         <C.align >
@@ -24,7 +38,7 @@ export const Registrar = ( {Registro}) => {
                 </C.Section>
 
                 <C.Footer>
-                    <C.Button onClick={()=>Registro({nome, casa})}>Confirmar</C.Button>
+                    <C.Button onClick={()=>check()}>Confirmar</C.Button>
                 </C.Footer>
 
             </C.Agendar>

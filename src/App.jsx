@@ -38,12 +38,16 @@ function App() {
     setRegister(false);
   }
 
+  const editRegister = ()=>{
+    setRegister(true);
+  }
+
 
 
   return (
     <div className="App">
       <Global/>
-      <Header/>
+      <Header Registrar={editRegister}/>
       <Dia/>
       <Horarios Modal={ openModal } getData={getData}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}

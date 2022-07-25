@@ -9,6 +9,7 @@ export const Agendar = styled.div`
     flex-direction:column;
     z-index:0;
     animation: 0.3s entrada ease;
+    background: blur(1px);
     
     @media screen and (max-width: 500px) {
         width:100%;
@@ -37,7 +38,7 @@ export const align = styled.div`
     justify-content:center;
     align-items:center;
     position:fixed;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(0, 0, 0, 0.6);
     z-index:1;
 
 `

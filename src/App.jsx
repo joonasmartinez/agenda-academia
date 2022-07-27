@@ -6,20 +6,25 @@ import Global from "./GlobalStyles";
 import { Agendar } from './components/agendar';
 import { Registrar } from './components/registrar';
 import { db} from './utils/firebase';
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, doc, addDoc, deleteDoc } from "firebase/firestore";
 
 function App() {
-  const [name, setName] = useState('');
-  const [casa, setCasa] = useState('');
 
+  const [nome, setNome] = useState('')
+  const [casa, setCasa] = useState('')
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [user, setUser] = useState({nome:'', casa:''})
+  const [users, setUsers] = useState('')
   const [data, setData] = useState()
   const [register, setRegister] = useState(false)
+  const [agendas, setAgendas] = useState([]);
+
   useEffect(()=>{
-    const userCollectionRef = collection(db, 'users')
+
     const carregar = async () => {
-      const data = await getDocs(userCollectionRef).then(res => console.log(res.docs))
+      const agendas = await getDocs(collection(db, 'agendas')).then(res => setAgendas(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
+      const users = await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
+
     }
     carregar();
     if(localStorage.getItem('user')) {
@@ -28,6 +33,11 @@ function App() {
       setRegister(true);
     }
   }, [])
+
+  useEffect(()=>{
+    console.log(agendas)
+    console.log(users)
+  }, [users])
 
   const openModal = (state)=>{
     setIsOpenModal(state)
@@ -54,6 +64,9 @@ function App() {
 
   return (
     <div className="App">
+      {/* <input type="text" placeholder='nome...' onChange={(e)=>{setNome(e.target.value)}}/> */}
+      {/* <input type="number" placeholder='casa...' onChange={(e)=>{setCasa(Number(e.target.value))}} /> */}
+      {/* <button onClick={async ()=> await addDoc(userCollectionRef, {nome, casa})}>Criar</button> */}
       <Global/>
       <Header Registrar={editRegister}/>
       <Dia/>

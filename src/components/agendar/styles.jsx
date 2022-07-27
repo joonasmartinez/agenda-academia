@@ -9,7 +9,7 @@ export const Agendar = styled.div`
     flex-direction:column;
     z-index:0;
     animation: 0.3s entrada ease;
-    background: blur(1px);
+    
     
     @media screen and (max-width: 500px) {
         width:100%;

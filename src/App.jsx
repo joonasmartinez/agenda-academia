@@ -13,7 +13,7 @@ function App() {
   const [nome, setNome] = useState('')
   const [casa, setCasa] = useState('')
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [user, setUser] = useState({nome:'', casa:''})
+  const [user, setUser] = useState({nome:'', casa:'', id:''})
   const [users, setUsers] = useState('')
   const [data, setData] = useState()
   const [register, setRegister] = useState(false)
@@ -36,7 +36,7 @@ function App() {
 
   useEffect(()=>{
     // console.log(agendas)
-    // console.log(users)
+    console.log(user)
   }, [users])
 
   const openModal = (state)=>{
@@ -50,14 +50,17 @@ function App() {
     setData(info);
   }
 
-  const createUser = ({nome, casa}) =>{
-    setUser({nome, casa})
-    localStorage.setItem('user', JSON.stringify({nome, casa}))
+  const createUser = ({nome, casa, id}) =>{
+    setUser({nome, casa, id})
     setRegister(false);
   }
 
   const editRegister = ()=>{
     setRegister(true);
+  }
+
+  const novaAgenda = ()=>{
+    return console.log("Agenda criada com sucesso.")
   }
 
 

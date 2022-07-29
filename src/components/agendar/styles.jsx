@@ -44,7 +44,7 @@ export const align = styled.div`
 `
 
 export const Input = styled.input`
-font-size:1em;
+    font-size:1em;
     height: 2em;
 `
 export const b = styled.b`

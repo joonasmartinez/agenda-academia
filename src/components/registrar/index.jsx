@@ -1,23 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import * as C from './styles';
+import { db } from '../../utils/firebase';
+import { getDoc, collection, doc, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 export const Registrar = ( {Registro}) => {
 
     const [nome, setNome] = useState('')
     const [casa, setCasa] = useState('')
+    const [id, setId] = useState('')
+    const [userActual, setUserActual] = useState({nome, casa, id})
 
     useEffect(() =>{
         if(localStorage.getItem('user')){
             let user = JSON.parse(localStorage.getItem('user'))
             setNome(user.nome)
             setCasa(user.casa)
+            setId(user.id)
+            if(id!='')load();
+
         }
     }, [])
-
-    const check = ()=>{
-        if(nome != '' && casa != ''){
-            return Registro({nome, casa})
+    
+    const load = async ()=>{
+        
+        await getDoc(doc(db, 'users', id)).then(res => {setUserActual(res.data())});
+    }
+    const check = async ()=>{
+        if(!localStorage.getItem('user')){
+            await addDoc(collection(db, 'users'), {nome, casa}).then(res => {setId(res.id); localStorage.setItem('user', JSON.stringify({nome, casa, id:res.id}));console.log("Usuário criado com sucesso!")})
+        }else{
+            await updateDoc(doc(db, 'users', id), {nome, casa}).then(res => {console.log("Usuário atualizado com sucesso!");localStorage.setItem('user', JSON.stringify({nome, casa, id}))})
         }
+        console.log({nome, casa, id})
+        return Registro({nome, casa, id})
     }
 
     return (
@@ -33,6 +48,8 @@ export const Registrar = ( {Registro}) => {
                     <C.Input onChange={(e)=>setNome(e.target.value)} placeholder='Ex.: João' value={nome}/>
                     <label>Casa</label>
                     <C.Input type='number' onChange={(e)=>setCasa(e.target.value)} placeholder='Ex.: 12' value={casa}/>
+                    <label>Unique ID</label>
+                    <C.Input disabled type='text' placeholder='Não possui ID' value={id}/>
 
                 </C.Section>
 

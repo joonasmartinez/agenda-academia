@@ -11,7 +11,8 @@ export const Agendar = styled.div`
     animation: 0.3s entrada ease;
     
     @media screen and (max-width: 500px) {
-        width:100%;
+        width:90%;
+        height:40%;
     }
     
     @media screen and (min-width: 500px) {
@@ -68,6 +69,7 @@ export const Section = styled.section`
     border-top: 0.5px groove #6e6e6e60;
     border-bottom: 0.5px groove #6e6e6e60;
     display:flex;
+    justify-content:center;
     flex-direction:column;
     align-items:flex-start;
 `

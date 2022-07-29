@@ -7,17 +7,16 @@ export const Agendar = ({casa, nome, horario, ModalAgenda}) => {
         <C.align >
             <C.Agendar >
                 <C.Header>
-                    {/* <h5>Modal</h5> */}
                     <h4>Agendar horário - Confirmação</h4>
                 </C.Header>
 
                 <C.Section>
-                    <label>{`Seu nome: ${user.nome}`}</label>
-                    <label>{`Sua casa: ${user.casa}`}</label>
-                    <label>{`Agendar horário: ${horario}`}</label>
+                    <C.b>29/7 - Sexta-feira - {horario} Horas</C.b>
+                    <label><C.b>{`Seu nome:`}</C.b> {user.nome}</label>
+                    <label><C.b>{`Sua casa:`}</C.b> {user.casa}</label>
                     <label>Acompanhante: </label>
-                    <C.Input placeholder='Nome(s) acompanhante(s)'/>
-
+                    <C.Input placeholder='Quem vai acompanhar você?'/>
+                    <C.b>Já reservados neste horário: </C.b><label>João, 14; Fátima, 16;</label>
                 </C.Section>
 
                 <C.Footer>

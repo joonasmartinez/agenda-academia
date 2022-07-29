@@ -29,9 +29,9 @@ export const Registrar = ( {Registro}) => {
                 </C.Header>
 
                 <C.Section>
-                    <label>Seu nome</label>
+                    <label>Nome</label>
                     <C.Input onChange={(e)=>setNome(e.target.value)} placeholder='Ex.: João' value={nome}/>
-                    <label>Sua casa</label>
+                    <label>Casa</label>
                     <C.Input type='number' onChange={(e)=>setCasa(e.target.value)} placeholder='Ex.: 12' value={casa}/>
 
                 </C.Section>

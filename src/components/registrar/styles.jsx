@@ -44,29 +44,13 @@ font-size: 1em;
 `
 
 export const Input = styled.input`
-    width: 30%;
+    width: 100%;
     height: 2em;
     outline:none;
-    border: none;
-    border-bottom: 1px solid grey;
+    border: 1px solid grey;
+    text-align:center;
+    margin: 10px 0px 5px 0px;
 
-    :hover{
-        
-    }
-    :focus{
-        animation:expandir 0.5s forwards ease;
-
-        @keyframes expandir {
-            from{
-                width: 30%;
-                border-bottom: 1px solid black;
-            }
-            to{
-                width: 60%;
-                border-bottom: 1px solid black;
-            }
-        }
-    }
 `
 
 export const Header = styled.header`
@@ -85,9 +69,7 @@ export const Section = styled.section`
     border-bottom: 0.5px groove #6e6e6e60;
     display:flex;
     flex-direction:column;
-    justify-content:space-around;
-    align-items:center;
-    flex-wrap:wrap;
+    align-items:flex-start;
 `
 export const Footer = styled.footer`
     width:100%;

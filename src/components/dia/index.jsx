@@ -7,9 +7,9 @@ export const Dia = () => {
     return (
 
         <C.Container>
-            <FaArrowCircleLeft/>
+            <C.row><FaArrowCircleLeft/></C.row>
             <C.Dia>28/07 Quinta-feira</C.Dia>
-            <FaArrowCircleRight/>
+            <C.row><FaArrowCircleRight/></C.row>
         </C.Container>
 
     )

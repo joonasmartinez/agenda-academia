@@ -22,7 +22,7 @@ function App() {
   useEffect(()=>{
 
     const carregar = async () => {
-      const agendas = await getDocs(collection(db, 'agendas')).then(res => setAgendas(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
+      const agendas = await getDocs(collection(db, 'agendas')).then(res => {console.log(res.docs[0].data());setAgendas(res.docs.map((doc) => ({...doc.data(), id: doc.id })))})
       const users = await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
 
     }
@@ -35,8 +35,8 @@ function App() {
   }, [])
 
   useEffect(()=>{
-    console.log(agendas)
-    console.log(users)
+    // console.log(agendas)
+    // console.log(users)
   }, [users])
 
   const openModal = (state)=>{

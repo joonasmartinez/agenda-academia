@@ -6,7 +6,7 @@ import Global from "./GlobalStyles";
 import { Agendar } from './components/agendar';
 import { Registrar } from './components/registrar';
 import { db} from './utils/firebase';
-import { getDocs, collection, doc, addDoc, deleteDoc } from "firebase/firestore";
+import { getDocs, getDoc, collection, doc, addDoc, deleteDoc } from "firebase/firestore";
 
 function App() {
 
@@ -22,21 +22,23 @@ function App() {
   useEffect(()=>{
 
     const carregar = async () => {
-      const agendas = await getDocs(collection(db, 'agendas')).then(res => {console.log(res.docs[0].data());setAgendas(res.docs.map((doc) => ({...doc.data(), id: doc.id })))})
+      const agendas = await getDocs(collection(db, 'agendas')).then(res => {setAgendas(res.docs.map((doc) => ({...doc.data(), id: doc.id })))})
       const users = await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
 
     }
     carregar();
     if(localStorage.getItem('user')) {
+      setUser(JSON.parse(localStorage.getItem('user')))
       return setRegister(false);
     }else{
       setRegister(true);
     }
+
   }, [])
 
   useEffect(()=>{
     // console.log(agendas)
-    console.log(user)
+    // console.log(user)
   }, [users])
 
   const openModal = (state)=>{
@@ -63,6 +65,10 @@ function App() {
     return console.log("Agenda criada com sucesso.")
   }
 
+  const isAdmin = async ()=>{
+    if(user.id != '') await getDoc(doc(db, 'users', user.id)).then(res => {return res.data().admin});
+  }
+
 
 
   return (
@@ -71,7 +77,7 @@ function App() {
       {/* <input type="number" placeholder='casa...' onChange={(e)=>{setCasa(Number(e.target.value))}} /> */}
       {/* <button onClick={async ()=> await addDoc(userCollectionRef, {nome, casa})}>Criar</button> */}
       <Global/>
-      <Header Registrar={editRegister}/>
+      <Header Registrar={editRegister} isAdmin={isAdmin}/>
       <Dia/>
       <Horarios Modal={ openModal } getData={getData}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}

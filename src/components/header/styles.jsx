@@ -17,8 +17,29 @@ export const Edit = styled.h3`
     position:absolute;
     left: 1em;
     color:white;
-    font-size:0.8em;
+    font-size:1em;
     cursor: pointer;
 
 
 `;
+
+export const Admin = styled.h5`
+    position:absolute;
+    right: 1em;
+    color:white;
+    font-size:1.3em;
+    cursor: pointer;
+    animation: startAdmin 1s forwards ease;
+    @keyframes startAdmin {
+        from{
+            opacity: 0;
+            top:0em;
+            right: 1em;
+        }to{
+            opacity: 1;
+            top:0.7em;
+            right:1em;
+        }
+    }
+
+`

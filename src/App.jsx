@@ -5,6 +5,7 @@ import { Dia } from './components/dia';
 import Global from "./GlobalStyles";
 import { Agendar } from './components/agendar';
 import { Registrar } from './components/registrar';
+import { Agendas } from './components/agendas';
 import { db} from './utils/firebase';
 import { getDocs, getDoc, collection, doc, addDoc, deleteDoc } from "firebase/firestore";
 
@@ -18,6 +19,7 @@ function App() {
   const [data, setData] = useState()
   const [register, setRegister] = useState(false)
   const [agendas, setAgendas] = useState([]);
+  const [modalAdmin, setModalAdmin] = useState(false);
 
   useEffect(()=>{
 
@@ -61,12 +63,8 @@ function App() {
     setRegister(true);
   }
 
-  const novaAgenda = ()=>{
-    return console.log("Agenda criada com sucesso.")
-  }
-
-  const isAdmin = async ()=>{
-    if(user.id != '') await getDoc(doc(db, 'users', user.id)).then(res => {return res.data().admin});
+  const OpenAdmin = ()=>{
+    setModalAdmin(true)
   }
 
 
@@ -77,11 +75,12 @@ function App() {
       {/* <input type="number" placeholder='casa...' onChange={(e)=>{setCasa(Number(e.target.value))}} /> */}
       {/* <button onClick={async ()=> await addDoc(userCollectionRef, {nome, casa})}>Criar</button> */}
       <Global/>
-      <Header Registrar={editRegister} isAdmin={isAdmin}/>
+      <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
       <Dia/>
       <Horarios Modal={ openModal } getData={getData}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
+      {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)}/> : null}
     </div>
   )
 }

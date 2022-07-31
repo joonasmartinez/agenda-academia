@@ -7,7 +7,7 @@ import { db } from '../../utils/firebase';
 import { getDocs, getDoc, collection, doc, addDoc, deleteDoc } from "firebase/firestore";
 
 
-export const Header = ({Registrar, isAdmin}) => {
+export const Header = ({Registrar, AdminOpen}) => {
     
     const [Admin, setAdmin] = useState(false);
     useEffect(()=>{
@@ -18,7 +18,7 @@ export const Header = ({Registrar, isAdmin}) => {
         }, [])
         return (
         <>
-            <C.Header><C.Edit onClick={()=>{Registrar()}}><BsFillGearFill/></C.Edit> Academia Residencial do Lago{Admin ? (<C.Admin><MdViewAgenda/></C.Admin>) : null}</C.Header>
+            <C.Header><C.Edit onClick={()=>{Registrar()}}><BsFillGearFill/></C.Edit> Academia Residencial do Lago {Admin ? (<C.Admin onClick={()=>AdminOpen()}><MdViewAgenda/></C.Admin>) : null}</C.Header>
         </>
 
     )

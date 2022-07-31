@@ -29,6 +29,7 @@ export const Admin = styled.h5`
     color:white;
     font-size:1.3em;
     cursor: pointer;
+    padding:5px;
     animation: startAdmin 1s forwards ease;
     @keyframes startAdmin {
         from{

@@ -7,7 +7,7 @@ export const Dia = styled.header`
     justify-content: center;
     margin: 3rem;
     color:white;
-    animation: start 0.6s forwards ease;
+    animation: start 0.6s ease;
     @keyframes start {
         from{
             opacity: 0;

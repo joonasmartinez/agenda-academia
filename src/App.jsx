@@ -7,7 +7,7 @@ import { Agendar } from './components/agendar';
 import { Registrar } from './components/registrar';
 import { Agendas } from './components/agendas';
 import { db} from './utils/firebase';
-import { getDocs, getDoc, collection, doc, addDoc, deleteDoc } from "firebase/firestore";
+import { getDocs, getDoc, collection, doc, addDoc, deleteDoc, orderBy } from "firebase/firestore";
 
 function App() {
 
@@ -27,7 +27,6 @@ function App() {
     const carregar = async () => {
       const agendas = await getDocs(collection(db, 'agendas')).then(res => res.docs.map(agenda => setAgendas(prev => [...prev, agenda])))
       const users = await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
-
     }
     carregar();
     if(localStorage.getItem('user')) {
@@ -42,7 +41,7 @@ function App() {
   useEffect(()=>{
     console.log(agendas)
     // console.log(user)
-  }, [users])
+  }, [agendas])
 
   const openModal = (state)=>{
     setIsOpenModal(state)
@@ -69,12 +68,12 @@ function App() {
   }
 
   const UpDia = ()=>{
-    console.log("Clicou", dia)
+    // console.log("Clicou", dia)
     if(dia+2>agendas.length)return console.log("Limite up")
     setDia(dia+1)
   }
   const DownDia = ()=>{
-    console.log("Clicou", dia)
+    // console.log("Clicou", dia)
     if(dia-1<0)return console.log("Limite down")
     setDia(dia-1)
   }
@@ -89,7 +88,7 @@ function App() {
       <Global/>
       <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
       <Dia getDia={agendas[dia]} NextDia={UpDia} PrevDia={DownDia}/>
-      <Horarios Modal={ openModal } getData={getData}/>
+      <Horarios Modal={ openModal } getData={getData} getHoras={agendas[dia]}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
       {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)}/> : null}

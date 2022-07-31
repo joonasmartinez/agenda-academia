@@ -7,7 +7,7 @@ export const Organize = styled.div`
     display:flex;
     flex-direction: column;
     align-items:center;
-    justify-content:space-between;
+    justify-content:start;
     /* background-color:grey; */
 `;
 export const horas = styled.h4`
@@ -16,7 +16,7 @@ export const horas = styled.h4`
     justify-content:center;
     background-color:white;
     width:20%;
-    height:100%;
+    max-height:100%;
     border-radius:10px;
     border-left: 1px solid #307e9c;
     margin:5px;
@@ -43,6 +43,7 @@ export const horas = styled.h4`
 export const agendamentos = styled.div`
     width: 15px;
     height: 15px;
+    padding: 5px;
     position:relative;
     bottom:10px;
     border-radius: 50%;

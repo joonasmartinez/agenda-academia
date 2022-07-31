@@ -7,22 +7,14 @@ import { IoMdClose } from 'react-icons/io'
 
 export const Agendas = ({Agendas, onClose}) => {
 
-    const [Agenda, setAgenda] = useState([]);
+    // const [Agenda, setAgenda] = useState(Agendas);
 
-    useEffect(()=>{
-        const loadAgenda = async ()=>{
-            console.log("Carregando agendas.")
-            await getDocs(collection(db, 'agendas')).then(res => res.docs.map(agenda => setAgenda(prev => [...prev, agenda])))
-        }
-        loadAgenda();
-        
-        
-    }, [])
-    useEffect(()=>{
-        
-        console.log(Agenda, 'dentro')
 
-    }, [Agenda])
+    // useEffect(()=>{
+        
+    //     console.log(Agenda, 'dentro')
+
+    // }, [Agenda])
 
     return (
 
@@ -35,12 +27,12 @@ export const Agendas = ({Agendas, onClose}) => {
             </C.Header>
 
             <C.Agenda>
-                {Agenda.map((item, index) => (<C.Title key={index}>{item.id}</C.Title>))}
+                {Agendas.map((item, index) => (<C.Title key={index}>{item.id}</C.Title>))}
             </C.Agenda>
 
             <C.Buttons>
                 <C.Button>Criar agenda</C.Button>
-                <C.Button primary ></C.Button>
+                {/* <C.Button primary ></C.Button> */}
             </C.Buttons>
 
         </C.Container>

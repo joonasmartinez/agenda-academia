@@ -31,7 +31,11 @@ export const Container = styled.div`
     color:white;
 `
 
-export const row = styled.div`
+export const row = styled.button`
+    background-color:transparent;
+    outline:none;
+    border:none;
+    color:white;
     cursor: pointer;
     padding: 8px;
     position:relative;

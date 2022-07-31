@@ -20,11 +20,12 @@ function App() {
   const [register, setRegister] = useState(false)
   const [agendas, setAgendas] = useState([]);
   const [modalAdmin, setModalAdmin] = useState(false);
+  const [dia, setDia] = useState(0);
 
   useEffect(()=>{
 
     const carregar = async () => {
-      const agendas = await getDocs(collection(db, 'agendas')).then(res => {setAgendas(res.docs.map((doc) => ({...doc.data(), id: doc.id })))})
+      const agendas = await getDocs(collection(db, 'agendas')).then(res => res.docs.map(agenda => setAgendas(prev => [...prev, agenda])))
       const users = await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
 
     }
@@ -39,7 +40,7 @@ function App() {
   }, [])
 
   useEffect(()=>{
-    // console.log(agendas)
+    console.log(agendas)
     // console.log(user)
   }, [users])
 
@@ -67,6 +68,17 @@ function App() {
     setModalAdmin(true)
   }
 
+  const UpDia = ()=>{
+    console.log("Clicou", dia)
+    if(dia+2>agendas.length)return console.log("Limite up")
+    setDia(dia+1)
+  }
+  const DownDia = ()=>{
+    console.log("Clicou", dia)
+    if(dia-1<0)return console.log("Limite down")
+    setDia(dia-1)
+  }
+
 
 
   return (
@@ -76,7 +88,7 @@ function App() {
       {/* <button onClick={async ()=> await addDoc(userCollectionRef, {nome, casa})}>Criar</button> */}
       <Global/>
       <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
-      <Dia/>
+      <Dia getDia={agendas[dia]} NextDia={UpDia} PrevDia={DownDia}/>
       <Horarios Modal={ openModal } getData={getData}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}

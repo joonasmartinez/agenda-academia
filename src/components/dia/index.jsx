@@ -12,7 +12,7 @@ export const Dia = ({getDia, NextDia, PrevDia}) => {
             setDia(getDia.id)
 
         }catch{
-            setDia(dia)
+            setDia('loading...')
 
         }
     }, [getDia])
@@ -21,7 +21,7 @@ export const Dia = ({getDia, NextDia, PrevDia}) => {
 
         <C.Container>
             <C.row><FaArrowCircleLeft onClick={()=>{PrevDia()}}/></C.row>
-            <C.Dia>{dia}</C.Dia>
+            <C.Dia key={dia}>{dia != 'loading...' ? dia : ''}</C.Dia>
             <C.row><FaArrowCircleRight onClick={()=>{NextDia()}}/></C.row>
         </C.Container>
 

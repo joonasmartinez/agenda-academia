@@ -9,22 +9,25 @@ export const Agendas = ({Agendas, onClose}) => {
 
     const [criarOn, setCriaron] = useState(false)
     const [horariosToAdd, setHorariosToAdd] = useState({'01:00':[],'02:00':[],'03:00':[],'04:00':[],'05:00':[],'06:00':[],'07:00':[],'08:00':[],'09:00':[],'10:00':[],'11:00':[],'12:00':[],'13:00':[],'14:00':[],'15:00':[],'16:00':[],'17:00':[],'18:00':[],'19:00':[],'20:00':[],'21:00':[],'22:00':[],'23:00':[],'00:00':[]})
-
+    const [adicionar , setAdicionar] = useState(1);
     const createAgenda = async (date)=>{
         const InfoDate = new Date();
-        await setDoc(doc(db, "agendas", `30.11.2022`), horariosToAdd
-        );
+        // await setDoc(doc(db, "agendas", date), horariosToAdd);
+        console.log("Criando agenda",date)
     }
 
     const nextAgenda = ()=>{
-        Agendas.sort((a,b)=>{
-            if(a.id>b.id) return 1;
-            if(a.id<b.id) return -1;
-        })
-        let data = Agendas[0].id.split('.')
-        console.log(new Date(`${data[1]}/${data[0]}/${data[2]}`).toLocaleDateString('pt'))
+        // const date = Agendas[Agendas.length-1].id.split('.')
+        const date = '31.10.2022'.split('.')
+        try{
+            if(new Date(`${date[1]}/${Number(date[0])+adicionar}/${date[2]}`).toLocaleDateString('pt') == 'Invalid Date') {setAdicionar(adicionar+1)}; 
+            console.log(new Date(`${date[1]}/${Number(date[0])+1}/${date[2]}`).toLocaleDateString('pt'))
+            // createAgenda(new Date(`${date[1]}/${Number(date[0])+1}/${date[2]}`).toLocaleDateString('pt').replaceAll('/', '.'))
+        }
+        catch(e){
+            console.log("Nao deu")
+        }
     }
-
 
 
     return (

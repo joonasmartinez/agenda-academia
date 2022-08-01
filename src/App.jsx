@@ -19,6 +19,7 @@ function App() {
   const [data, setData] = useState()
   const [register, setRegister] = useState(false)
   const [agendas, setAgendas] = useState([]);
+  const [agendasOrded, setAgendasOrded] = useState([]);
   const [modalAdmin, setModalAdmin] = useState(false);
   const [dia, setDia] = useState(0);
 
@@ -27,6 +28,21 @@ function App() {
     await getDocs(collection(db, 'agendas')).then(res => res.docs.map(agenda => setAgendas(prev => [...prev, agenda])))
     await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
   }
+
+  const orderByTime = (agenda)=>{
+    agenda.sort((a,b)=>{
+      a = a.id.split('.')
+      a = new Date(`${a[1]}/${a[0]}/${a[2]}`).getTime()
+      b = b.id.split('.')
+      b = new Date(`${b[1]}/${b[0]}/${b[2]}`).getTime()
+      if(a>b) return 1;
+      if(a<b) return -1;
+  })
+  setAgendasOrded(agenda)
+  }
+  useEffect(()=>{
+    orderByTime(agendas)
+  },[agendas])
   useEffect(()=>{
 
     carregar();
@@ -39,11 +55,6 @@ function App() {
     }
 
   }, [])
-
-  // useEffect(()=>{
-    
-  //   // console.log(user)
-  // }, [agendas])
 
   const openModal = (state)=>{
     setIsOpenModal(state)
@@ -93,8 +104,8 @@ function App() {
       {/* <button onClick={async ()=> await addDoc(userCollectionRef, {nome, casa})}>Criar</button> */}
       <Global/>
       <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
-      <Dia getDia={agendas[dia]} NextDia={UpDia} PrevDia={DownDia}/>
-      <Horarios Modal={ openModal } getData={getData} getHoras={agendas[dia]}/>
+      <Dia getDia={agendasOrded[dia]} NextDia={UpDia} PrevDia={DownDia}/>
+      <Horarios Modal={ openModal } getData={getData} getHoras={agendasOrded[dia]}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
       {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)}/> : null}

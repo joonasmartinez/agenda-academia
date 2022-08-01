@@ -22,13 +22,15 @@ function App() {
   const [modalAdmin, setModalAdmin] = useState(false);
   const [dia, setDia] = useState(0);
 
+  const carregar = async () => {
+    console.log("Carregando")
+    await getDocs(collection(db, 'agendas')).then(res => res.docs.map(agenda => setAgendas(prev => [...prev, agenda])))
+    await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
+  }
   useEffect(()=>{
 
-    const carregar = async () => {
-      const agendas = await getDocs(collection(db, 'agendas')).then(res => res.docs.map(agenda => setAgendas(prev => [...prev, agenda])))
-      const users = await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
-    }
     carregar();
+    setAgendas([])
     if(localStorage.getItem('user')) {
       setUser(JSON.parse(localStorage.getItem('user')))
       return setRegister(false);
@@ -38,10 +40,10 @@ function App() {
 
   }, [])
 
-  useEffect(()=>{
-    console.log(agendas)
-    // console.log(user)
-  }, [agendas])
+  // useEffect(()=>{
+    
+  //   // console.log(user)
+  // }, [agendas])
 
   const openModal = (state)=>{
     setIsOpenModal(state)
@@ -71,11 +73,15 @@ function App() {
     // console.log("Clicou", dia)
     if(dia+2>agendas.length)return console.log("Limite up")
     setDia(dia+1)
+    setAgendas([])
+    carregar();
   }
   const DownDia = ()=>{
     // console.log("Clicou", dia)
     if(dia-1<0)return console.log("Limite down")
     setDia(dia-1)
+    setAgendas([])
+    carregar();
   }
 
 
@@ -89,7 +95,7 @@ function App() {
       <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
       <Dia getDia={agendas[dia]} NextDia={UpDia} PrevDia={DownDia}/>
       <Horarios Modal={ openModal } getData={getData} getHoras={agendas[dia]}/>
-      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data.hora} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
+      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
       {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)}/> : null}
     </div>

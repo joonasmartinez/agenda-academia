@@ -69,3 +69,13 @@ export const Button = styled.button`
         background: ${props => props.primary ? "#e9e9e9" : "#286983"};
     }
 `
+
+export const input = styled.input`
+outline:none;
+width:30%;
+height:1.3rem;
+text-align:center;
+border: 1px solid grey;
+margin:5px;
+
+`

@@ -7,7 +7,7 @@ export const Organize = styled.div`
     display:flex;
     flex-direction: column;
     align-items:center;
-    justify-content:start;
+    justify-content:center;
     /* background-color:grey; */
 `;
 export const horas = styled.h4`
@@ -16,7 +16,8 @@ export const horas = styled.h4`
     justify-content:center;
     background-color:white;
     width:20%;
-    max-height:100%;
+    height:100%;
+    max-height: 40px;
     border-radius:10px;
     border-left: 1px solid #307e9c;
     margin:5px;

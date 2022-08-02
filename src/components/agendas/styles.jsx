@@ -69,6 +69,25 @@ export const Button = styled.button`
         background: ${props => props.primary ? "#e9e9e9" : "#286983"};
     }
 `
+export const quadroHorario = styled.div`
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:90%;
+    flex-wrap:wrap;
+`
+    
+
+export const horario = styled.h4`
+    margin: 1px;
+    padding: 5px;
+    border-radius: 15px;
+    background-color: #80808024;
+    cursor: pointer;
+    :active{
+        background-color:blue;
+    }
+`
 
 export const input = styled.input`
 outline:none;

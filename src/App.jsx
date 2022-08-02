@@ -84,13 +84,16 @@ function App() {
     // console.log("Clicou", dia)
     if(dia+2>agendas.length)return console.log("Limite up")
     setDia(dia+1)
-    setAgendas([])
-    carregar();
+    ReloadAgenda();
   }
   const DownDia = ()=>{
     // console.log("Clicou", dia)
     if(dia-1<0)return console.log("Limite down")
     setDia(dia-1)
+    ReloadAgenda();
+  }
+
+  const ReloadAgenda = ()=>{
     setAgendas([])
     carregar();
   }
@@ -108,7 +111,7 @@ function App() {
       <Horarios Modal={ openModal } getData={getData} getHoras={agendasOrded[dia]}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
-      {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)}/> : null}
+      {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)} Reload={ReloadAgenda}/> : null}
     </div>
   )
 }

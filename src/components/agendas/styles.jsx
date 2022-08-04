@@ -21,6 +21,11 @@ export const Container = styled.div`
     align-items:center;
     justify-content:center;
     border-radius: 15px;
+
+    @media screen and (max-width: 500px) {
+        width:95%;
+    }
+
 `
 
 export const Title = styled.header`
@@ -44,7 +49,7 @@ export const Close = styled.div`
     padding: 15px;
     cursor: pointer;
 `
-export const Header = styled.footer`
+export const Header = styled.header`
     width: 100%;
     height: 100%;
     display:flex;
@@ -52,6 +57,9 @@ export const Header = styled.footer`
     align-items:center;
 `
 export const Buttons = styled.footer`
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     margin: 15px;
 `
 
@@ -78,11 +86,14 @@ export const quadroHorario = styled.div`
 `
     
 
-export const horario = styled.h4`
+export const horario = styled.button`
     margin: 1px;
     padding: 5px;
+    outline:none;
+    border:none;
+    font-size: 1rem;
     border-radius: 15px;
-    background-color: #80808024;
+    background-color: ${props => props.existe ? "#e9e9e9" : "#2869837a"};
     cursor: pointer;
     :active{
         background-color:blue;

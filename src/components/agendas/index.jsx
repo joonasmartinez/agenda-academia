@@ -8,13 +8,30 @@ import { IoMdClose } from 'react-icons/io'
 export const Agendas = ({Agendas, onClose, Reload}) => {
 
     const [criarOn, setCriaron] = useState(false)
-    const [horariosToAdd, setHorariosToAdd] = useState({'01:00':[],'02:00':[],'03:00':[],'04:00':[],'05:00':[],'06:00':[],'07:00':[],'08:00':[],'09:00':[],'10:00':[],'11:00':[],'12:00':[],'13:00':[],'14:00':[],'15:00':[],'16:00':[],'17:00':[],'18:00':[],'19:00':[],'20:00':[],'21:00':[],'22:00':[],'23:00':[],'00:00':[]})
-    let horariosAdd = {'00:00':[]};
+    const [horariosToAdd, setHorariosToAdd] = useState({'00:00':[],'01:00':[],'02:00':[],'03:00':[],'04:00':[],'05:00':[],'06:00':[],'07:00':[],'08:00':[],'09:00':[],'10:00':[],'11:00':[],'12:00':[],'13:00':[],'14:00':[],'15:00':[],'16:00':[],'17:00':[],'18:00':[],'19:00':[],'20:00':[],'21:00':[],'22:00':[],'23:00':[]})
+    let horariosAdd = {'01:00':[],'02:00':[],'03:00':[],'04:00':[],'05:00':[],'06:00':[],'07:00':[],'08:00':[],'09:00':[],'10:00':[],'11:00':[],'12:00':[],'13:00':[],'14:00':[],'15:00':[],'16:00':[],'17:00':[],'18:00':[],'19:00':[],'20:00':[],'21:00':[],'22:00':[],'23:00':[],'00:00':[]};
     const createAgenda = async (date)=>{
-        await setDoc(doc(db, "agendas", date), horariosAdd);
+        await setDoc(doc(db, "agendas", date), horariosToAdd);
         console.log("Criando agenda",date)
         Reload();
     }
+    const update = (data)=>{
+        let newState = horariosToAdd;
+        if(horariosToAdd[data]) {
+            
+            let newState = {...horariosToAdd}
+            delete newState[data];
+            console.log(newState)
+            setHorariosToAdd(newState)
+
+        }else{
+
+        }
+    }
+
+    useEffect(()=>{
+        console.log(horariosToAdd)
+    }, [horariosToAdd])
 
     const nextAgenda = ()=>{
 
@@ -28,8 +45,6 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
             console.log("Erro ao gerar data da agenda.")
         }
     }
-
-
     return (
 
         <C.Modal>
@@ -42,9 +57,9 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
 
             {criarOn ? (
                 <>
-                <h3>{nextAgenda()}</h3>
+                <h3>{nextAgenda().replaceAll('.','/')}</h3>
                 <C.Title>Deseja remover algum horário? Basta clicar nele.</C.Title>
-                <C.quadroHorario>{Object.keys(horariosToAdd).map(item => <C.horario>{item}</C.horario>)}</C.quadroHorario><C.Button onClick={()=>{setCriaron(false); createAgenda(nextAgenda())}}>Criar agenda</C.Button>
+                <C.quadroHorario>{Object.keys(horariosToAdd).map(item =>  <C.horario onClick={()=>{ update(item) }}>{item}</C.horario>)}</C.quadroHorario><C.Button onClick={()=>{setCriaron(false); createAgenda(nextAgenda())}}>Criar agenda</C.Button>
                 
                 </>
             ) : 

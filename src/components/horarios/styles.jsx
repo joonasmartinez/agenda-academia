@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
 export const Organize = styled.div`
-    margin-top: 15px;
+    margin-top: 2%;
     width:100%;
-    height:90vh;
+    height:100vh;
     display:flex;
     flex-direction: column;
     align-items:center;
@@ -34,6 +34,15 @@ export const horas = styled.h4`
             }
         }
         color:grey;
+    }
+    @keyframes init {
+        from{
+            opacity:0;
+            left:1rem;
+        }to{
+            opacity:1;
+            left:0;
+        }
     }
 
     @media screen and (max-width: 500px) {

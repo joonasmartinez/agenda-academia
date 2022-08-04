@@ -52,7 +52,7 @@ export const Registrar = ( {Registro}) => {
                 <C.Header>
                     {/* <h5>Modal</h5> */}
                     <h4>Confirme seus dados</h4>
-                    <AiOutlineClose onClick={close} />
+                    <C.close><AiOutlineClose onClick={close} /></C.close>
                 </C.Header>
 
                 <C.Section>

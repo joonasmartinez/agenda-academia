@@ -11,6 +11,21 @@ export const Modal = styled.div`
     background-color:#03030396;
 
 `
+export const agendamentos = styled.div`
+    width: 15px;
+    height: 15px;
+    padding: 5px;
+    position:relative;
+    bottom:15px;
+    left: -15px;
+    border-radius: 50%;
+    background-color:#307e9c;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:0.7rem;
+`;
 
 export const Container = styled.div`
     width: 50%;
@@ -109,6 +124,15 @@ position:relative;
             opacity:1;
         }
     }
+`
+
+export const agendas = styled.div`
+    display:flex;
+    flex-direction: ${props => props.column ? 'column' : 'row'};
+    align-items:center;
+    justify-content:center;
+    margin: 5px;
+
 `
 
 export const input = styled.input`

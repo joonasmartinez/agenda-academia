@@ -87,16 +87,27 @@ export const quadroHorario = styled.div`
     
 
 export const horario = styled.button`
+position:relative;
     margin: 1px;
     padding: 5px;
     outline:none;
     border:none;
     font-size: 1rem;
     border-radius: 15px;
-    background-color: ${props => props.existe ? "#e9e9e9" : "#2869837a"};
+    background-color: ${props => props.existe ? "#e9e9e9" : "#e9e9e9"};
+    animation: init 0.5s forwards ease;
     cursor: pointer;
     :active{
-        background-color:blue;
+        background-color:#2869837a;
+    }
+    @keyframes init {
+        from{
+            left: -5px;
+            opacity:0;
+        }to{
+            left: 0px;
+            opacity:1;
+        }
     }
 `
 

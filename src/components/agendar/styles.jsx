@@ -120,7 +120,7 @@ export const Acomp = styled.div`
     margin-bottom:10px;
 `
 export const NomeReser = styled.div`
-    background-color:#ebebeb;
+    background-color:${props => props.empty ? '' : '#ebebeb'};
     padding:5px;
     border-radius: 15px;
 `

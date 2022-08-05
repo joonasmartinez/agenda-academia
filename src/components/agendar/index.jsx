@@ -23,7 +23,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia}) => {
                             {/* <C.Input placeholder='Quem vai acompanhar você?'/> */}
                         </C.Acomp>
                         <C.b>Já reservados neste horário: </C.b>{}
-                        <C.Dados>{dia.data()[horario].length == 0 ? <C.NomeReser>Sem reservas até o momento.</C.NomeReser> : (Object.values(dia.data()[horario].map(nome => <C.NomeReser>{nome}</C.NomeReser>)))}</C.Dados>
+                        <C.Dados>{dia.data()[horario].length == 0 ? <C.NomeReser empty>Sem reservas até o momento.</C.NomeReser> : (Object.values(dia.data()[horario].map(nome => <C.NomeReser>{nome}</C.NomeReser>)))}</C.Dados>
                     </C.Section>
 
                         <h6>*Máximo de 3 pessoas por horário.</h6>

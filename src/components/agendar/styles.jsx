@@ -107,7 +107,7 @@ export const Button = styled.button`
 `
 export const Dados = styled.div`
     display:flex;
-    justify-content:start;
+    justify-content:${props => props.center ? 'center' : 'start'};
     gap:20px;
     align-items:center;
     margin-bottom:10px;

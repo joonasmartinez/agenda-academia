@@ -13,7 +13,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia}) => {
                     </C.Header>
 
                     <C.Section>
-                        <C.Dados>
+                        <C.Dados center>
                             <label><C.b>{`Seu nome:`}</C.b> {user.nome}</label>
                             <label><C.b>{`Sua casa:`}</C.b> {user.casa}</label>
                         </C.Dados>

@@ -12,13 +12,13 @@ export const Modal = styled.div`
 
 `
 export const agendamentos = styled.div`
-    width: 15px;
-    height: 15px;
+    width: 100%;
+    height: 100%;
     padding: 5px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
     position:relative;
-    bottom:15px;
-    left: -15px;
-    border-radius: 50%;
+    margin: -5px -5px 0px 5px;
     background-color:#307e9c;
     display:flex;
     justify-content:center;
@@ -102,7 +102,9 @@ export const quadroHorario = styled.div`
     
 
 export const horario = styled.button`
-position:relative;
+    position:relative;
+    display:flex;
+    justify-content:center;
     margin: 1px;
     padding: 5px;
     outline:none;

@@ -23,9 +23,9 @@ function App() {
   const [modalAdmin, setModalAdmin] = useState(false);
   const [dia, setDia] = useState(0);
 
-  const carregar = async () => {
+  const carregar = async() => {
     console.log("Carregando")
-    await getDocs(collection(db, 'agendas')).then(res => res.docs.map(agenda => setAgendas(prev => [...prev, agenda])))
+    await getDocs(collection(db, 'agendas')).then(res => {setAgendas([]);res.docs.map(agenda => setAgendas(prev => [...prev, agenda]))})
     await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
   }
 
@@ -102,14 +102,11 @@ function App() {
 
   return (
     <div className="App">
-      {/* <input type="text" placeholder='nome...' onChange={(e)=>{setNome(e.target.value)}}/> */}
-      {/* <input type="number" placeholder='casa...' onChange={(e)=>{setCasa(Number(e.target.value))}} /> */}
-      {/* <button onClick={async ()=> await addDoc(userCollectionRef, {nome, casa})}>Criar</button> */}
       <Global/>
       <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
       <Dia getDia={agendasOrded[dia]} NextDia={UpDia} PrevDia={DownDia}/>
       <Horarios Modal={ openModal } getData={getData} getHoras={agendasOrded[dia]}/>
-      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda}/> : null}
+      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda} dia={agendasOrded[dia]}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
       {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)} Reload={ReloadAgenda}/> : null}
     </div>

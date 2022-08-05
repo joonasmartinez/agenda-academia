@@ -75,7 +75,7 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
         <C.Container>
             <C.Header>
                 <C.Title>AGENDAS (Admin) </C.Title> 
-                <C.Close onClick={()=>onClose()}><IoMdClose/></C.Close>
+                <C.Close onClick={()=>{onClose();Reload()}}><IoMdClose/></C.Close>
             </C.Header>
 
             {editOn && !criarOn && <>
@@ -85,7 +85,7 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
                 {agendaToEdit == '' ?  <C.Title>Carregando...</C.Title> : (
                     <>
                     <C.Title>Horarios da agenda - Clique para remover</C.Title>
-                    <C.quadroHorario>{Object.keys(agendaToEdit).sort().map(item => <><C.horario onClick={()=>{updateEdit(item)}}>{item}</C.horario><C.agendamentos>2</C.agendamentos></>)}</C.quadroHorario>
+                    <C.quadroHorario>{Object.keys(agendaToEdit).sort().map(item => <><C.horario onClick={()=>{updateEdit(item)}}>{item}</C.horario></>)}</C.quadroHorario>
                     <C.Title>Deseja adicionar novo horário? - Clique para adicionar</C.Title>
                     <C.quadroHorario>{Object.keys(horariosToAdd).map(item =><C.horario onClick={()=>{updateEdit(item)}}>{item}</C.horario>)}</C.quadroHorario>
                     <C.Button onClick={()=>{setDoc(doc(db, 'agendas', editingAgenda), agendaToEdit);Reload()}}>Confirmar</C.Button>

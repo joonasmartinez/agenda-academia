@@ -1,9 +1,16 @@
 import {React, useState} from 'react';
+import { Number } from '../number';
 import * as C from './styles';
 
-export const Agendar = ({casa, nome, horario, ModalAgenda, dia}) => {
+export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload}) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
-    const [acompanhante, setAcompanhante] = useState(0);
+    const [acompanhante, setAcompanhante] = useState(false);
+    const [value, setValue] = useState(0);
+
+    const show = (value)=>{
+        console.log(value)
+    }
+
     return (
             <C.align >
                 <C.Agendar >
@@ -17,13 +24,15 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia}) => {
                             <label><C.b>{`Seu nome:`}</C.b> {user.nome}</label>
                             <label><C.b>{`Sua casa:`}</C.b> {user.casa}</label>
                         </C.Dados>
-                            <label><input type='checkbox'></input> Levar acompanhante? </label>
-                            {}
+                            <Number showValue={show} />
+                            {console.log("Valor:", value)}
+                            
+                            {/* <label><input type='number' onChange={()=>{setAcompanhante(!acompanhante)}}></input> Levar acompanhante? </label>
+                            {acompanhante ? <C.Input maxLength={10} placeholder='Quem vai acompanhar você?'/> : null} */}
                         <C.Acomp>
-                            {/* <C.Input placeholder='Quem vai acompanhar você?'/> */}
                         </C.Acomp>
                         <C.b>Já reservados neste horário: </C.b>{}
-                        <C.Dados>{dia.data()[horario].length == 0 ? <C.NomeReser empty>Sem reservas até o momento.</C.NomeReser> : (Object.values(dia.data()[horario].map(nome => <C.NomeReser>{nome}</C.NomeReser>)))}</C.Dados>
+                        <C.Dados>{dia.data()[horario].length == 0 ? <C.NomeReser empty>Sem reservas até o momento.</C.NomeReser> : (Object.values(dia.data()[horario].map(nome => <C.NomeReser key={nome}>{nome}</C.NomeReser>)))}</C.Dados>
                     </C.Section>
 
                         <h6>*Máximo de 3 pessoas por horário.</h6>

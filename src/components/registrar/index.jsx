@@ -9,7 +9,6 @@ export const Registrar = ( {Registro}) => {
     const [nome, setNome] = useState('')
     const [casa, setCasa] = useState('')
     const [id, setId] = useState('')
-    const [userActual, setUserActual] = useState({nome, casa, id})
 
     useEffect(() =>{
         if(localStorage.getItem('user')){
@@ -38,7 +37,6 @@ export const Registrar = ( {Registro}) => {
                 await addDoc(collection(db, 'users'), {nome, casa}).then(res => {setId(res.id); localStorage.setItem('user', JSON.stringify({nome, casa, id:res.id}));console.log("Usuário criado com sucesso!")})
             }
         }
-        console.log({nome, casa, id})
         return Registro({nome, casa, id})
     }
 
@@ -60,8 +58,8 @@ export const Registrar = ( {Registro}) => {
                     <C.Input type='text' onChange={(e)=>setNome(e.target.value)} placeholder='Ex.: João' value={nome}/>
                     <label>Casa</label>
                     <C.Input type='number' onChange={(e)=>setCasa(e.target.value)} placeholder='Ex.: 12' value={casa}/>
-                    <label>Unique ID</label>
-                    <C.Input disabled type='text' placeholder='Não possui ID' value={id}/>
+                    {/* <label>Unique ID</label>
+                    <C.Input disabled type='text' placeholder='' value={id}/> */}
 
                 </C.Section>
 

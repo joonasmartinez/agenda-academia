@@ -10,9 +10,10 @@ export const Dia = ({getDia, NextDia, PrevDia}) => {
     useEffect(()=>{
         try{
             setDia(getDia.id)
+            // console.log(getDia.id)
 
         }catch{
-            setDia('loading...')
+            setDia(dia)
 
         }
     }, [getDia])
@@ -21,7 +22,7 @@ export const Dia = ({getDia, NextDia, PrevDia}) => {
 
         <C.Container>
             <C.row><FaArrowCircleLeft onClick={()=>{PrevDia()}}/></C.row>
-            <C.Dia key={dia}>{dia != 'loading...' ? dia : ''}</C.Dia>
+            {dia != 'loading...' ? <C.Dia key={dia}>{dia}</C.Dia> : <C.Dia key={dia} noAnim>{dia}</C.Dia>}
             <C.row><FaArrowCircleRight onClick={()=>{NextDia()}}/></C.row>
         </C.Container>
 

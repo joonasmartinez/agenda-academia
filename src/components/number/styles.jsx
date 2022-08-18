@@ -23,3 +23,10 @@ export const Button = styled.button`
     font-size: 1.2em;
 
 `
+
+export const Input = styled.input`
+    color:black;
+    font-size:1rem;
+    width:100%;
+    text-align:center;
+`

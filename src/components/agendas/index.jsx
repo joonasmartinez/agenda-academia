@@ -74,10 +74,9 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
         <C.Modal>
         <C.Container>
             <C.Header>
-                <C.Title>AGENDAS (Admin) </C.Title> 
+                <C.Title>Administração</C.Title> 
                 <C.Close onClick={()=>{onClose();Reload()}}><IoMdClose/></C.Close>
             </C.Header>
-
             {editOn && !criarOn && <>
             
                 <>

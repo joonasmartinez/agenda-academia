@@ -8,7 +8,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload}) => {
     const [value, setValue] = useState(0);
 
     const show = (value)=>{
-        console.log(value)
+        console.log("val",value)
     }
 
     return (
@@ -24,7 +24,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload}) => {
                             <label><C.b>{`Seu nome:`}</C.b> {user.nome}</label>
                             <label><C.b>{`Sua casa:`}</C.b> {user.casa}</label>
                         </C.Dados>
-                            <Number showValue={show} />
+                            <Number hidden showValue={(val)=>show(val)}/>
                             {console.log("Valor:", value)}
                             
                             {/* <label><input type='number' onChange={()=>{setAcompanhante(!acompanhante)}}></input> Levar acompanhante? </label>

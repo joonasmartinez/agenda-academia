@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Modal = styled.div`
-    width: 50%;
+    width: 100%;
     height:50%;
     /* background-color:green; */
     position:relative;
@@ -29,4 +29,5 @@ export const Input = styled.input`
     font-size:1rem;
     width:100%;
     text-align:center;
+    border:none;
 `

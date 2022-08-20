@@ -4,7 +4,7 @@ export const Agendar = styled.div`
     position:relative;
     border-radius:15px;
     min-width:300px;
-    height: 300px;
+    min-height: 300px;
     background-color:white;
     display:flex;
     flex-direction:column;
@@ -13,7 +13,7 @@ export const Agendar = styled.div`
     
     @media screen and (max-width: 500px) {
         width:90%;
-        height:40%;
+        min-height:40%;
     }
 
     @keyframes entrada {
@@ -105,6 +105,16 @@ export const Button = styled.button`
     }
 
 `
+export const ButtonDisable = styled.button`
+
+    background: #696969;
+    color: white;
+    font-size: 1em;
+    margin: 1em;
+    padding: 0.25em 1em;
+    border: 2px solid #696969;
+    border-radius: 3px;
+`
 export const Dados = styled.div`
     display:flex;
     justify-content:${props => props.center ? 'center' : 'start'};
@@ -123,4 +133,12 @@ export const NomeReser = styled.div`
     background-color:${props => props.empty ? '' : '#ebebeb'};
     padding:5px;
     border-radius: 15px;
+`
+
+export const InputConv = styled.input`
+    font-size:1rem;
+    color:black;
+    outline:none;
+    padding:1%;
+    margin:1%;
 `

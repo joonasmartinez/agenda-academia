@@ -133,12 +133,16 @@ export const NomeReser = styled.div`
     background-color:${props => props.empty ? '' : '#ebebeb'};
     padding:5px;
     border-radius: 15px;
+    overflow-x:hidden;
+    overflow-y:hidden;
 `
 
 export const InputConv = styled.input`
     font-size:1rem;
     color:black;
     outline:none;
-    padding:1%;
+    padding:2%;
     margin:1%;
+    border-radius:15px;
+    width:100%;
 `

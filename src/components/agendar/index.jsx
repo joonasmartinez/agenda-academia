@@ -1,17 +1,29 @@
+import { useEffect } from 'react';
 import {React, useState} from 'react';
 import { Number } from '../number';
 import * as C from './styles';
 
-export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload}) => {
+export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAgendamento, updateAgenda}) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
     const [valueInput, setValueInput] = useState(0);
+    const [acompanhantes, setAcompanhantes] = useState([{nome, casa}]); //Usuários Gym
+    const [warning, setWarning] = useState(false);
+    
+    useEffect(()=>{
+        const intervalo = setInterval(()=>{updateAgenda()}, 1000)
+
+        return () => clearInterval(intervalo);
+    },[])
 
     const createAcompanhante = ()=>{
         const result = [];
         for(let a=1;a<=valueInput; a++){
             if((dia.data()[horario].length + a) < 3){
-                console.log(dia.data()[horario].length,a)
-                result.push(<C.InputConv placeholder={`Nome acompanhante ${a}`}></C.InputConv>);
+                result.push(<C.InputConv key={a} onChange={(name)=>{
+                    let data = acompanhantes;
+                    data[a] = {nome:name.target.value, casa}
+                    setAcompanhantes(data), console.log(acompanhantes)}}
+                     placeholder={`Nome acompanhante ${a}`}/>);
             }else{
                 return <p>Máximo 3 pessoas por horário!</p>
             }
@@ -19,6 +31,28 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload}) => {
         return (
             result
         )
+    }
+
+    useEffect(()=>{
+        console.log(acompanhantes)
+    },[acompanhantes])
+
+    const create = async ()=>{
+        let userGym = [];
+        for(let a = 0; a <= valueInput; a++){
+            if(acompanhantes[a]=="" || acompanhantes[a] == undefined){
+                return (setWarning(true), setTimeout(()=>{setWarning(false)}, 4000))
+            }
+            userGym.push(acompanhantes[a])
+        }
+        console.log('Usuarios:',userGym)
+
+        if(await checkAgendamento(userGym, horario)){
+            console.log("Criado com sucesso.")
+        }else{
+            
+            console.log("Horario indisponivel");
+        }
     }
 
     return (
@@ -39,7 +73,8 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload}) => {
                             <>
                             <h6>Levar acompanhante com você?</h6>
                             <Number changeValue={(val)=>setValueInput(val)}/>
-                            {valueInput > 0 ? <>{createAcompanhante()}</> : <p>Irei sozinho</p>}
+                            {valueInput > 0 ? <>{createAcompanhante()}</> : <p>Apenas eu irei.</p>}
+                            {warning ? <p>Preencha o campo acima</p> : null}
                             </>
                             }
 
@@ -52,8 +87,8 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload}) => {
 
                         <h6>*Máximo de 3 pessoas por horário.</h6>
                     <C.Footer>
-                        {dia.data()[horario].length == 3 ? <C.ButtonDisable>Indisponível</C.ButtonDisable> : <C.Button onClick={()=>{}}>Confirmar</C.Button>}
-                        <C.Button primary onClick={()=>ModalAgenda(false)}>Cancelar</C.Button>
+                        {dia.data()[horario].length == 3 ? <C.ButtonDisable>Indisponível</C.ButtonDisable> : <C.Button onClick={()=>{create()}}>Confirmar</C.Button>}
+                        <C.Button primary onClick={()=>{ModalAgenda(false)}}>Cancelar</C.Button>
                     </C.Footer>
 
                 </C.Agendar>

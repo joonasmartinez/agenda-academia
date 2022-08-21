@@ -7,7 +7,7 @@ import { Agendar } from './components/agendar';
 import { Registrar } from './components/registrar';
 import { Agendas } from './components/agendas';
 import { db} from './utils/firebase';
-import { getDocs, getDoc, collection, doc, addDoc, deleteDoc, orderBy } from "firebase/firestore";
+import { getDocs, getDoc, collection, doc, addDoc, deleteDoc, orderBy, setDoc, updateDoc } from "firebase/firestore";
 
 function App() {
 
@@ -55,8 +55,19 @@ function App() {
 
   }, [])
 
+  const registred = () => {
+    if(localStorage.getItem('user')) {
+      setUser(JSON.parse(localStorage.getItem('user')))
+      return true;
+    }else{
+      return setRegister(true);
+    }
+  }
+
   const openModal = (state)=>{
-    setIsOpenModal(state)
+    if(registred()){
+      setIsOpenModal(state)
+    }
   }
   const openModalAgenda = (state)=>{
     setIsOpenModal(state)
@@ -80,13 +91,11 @@ function App() {
   }
 
   const UpDia = ()=>{
-    // console.log("Clicou", dia)
     if(dia+2>agendas.length)return console.log("Limite up")
     setDia(dia+1)
     ReloadAgenda();
   }
   const DownDia = ()=>{
-    // console.log("Clicou", dia)
     if(dia-1<0)return console.log("Limite down")
     setDia(dia-1)
     ReloadAgenda();
@@ -97,6 +106,23 @@ function App() {
     carregar();
   }
 
+  const Agendamento = async (userGym = '', horario)=>{
+    await carregar();
+    console.log(agendas[dia].data()[horario].length, userGym)
+    if((agendas[dia].data()[horario].length + userGym.length)<=3){
+      console.log('info:','agendas', agendas[dia].id, horario, `${userGym[0].nome}, ${userGym[0].casa}`)
+      
+      let newUsers = {};
+      await getDoc(doc(db, 'agendas', agendas[dia].id)).then(res => newUsers=res.data()[horario])
+      newUsers.push(`${userGym[0].nome}, ${userGym[0].casa}`)
+      console.log('Users', newUsers)
+      await updateDoc(doc(db, 'agendas', agendas[dia].id), {[horario]:newUsers}).then(console.log("Updated!"))
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 
 
   return (
@@ -105,7 +131,7 @@ function App() {
       <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
       <Dia getDia={agendasOrded[dia]} NextDia={UpDia} PrevDia={DownDia}/>
       <Horarios Modal={ openModal } getData={getData} getHoras={agendasOrded[dia]}/>
-      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.casa}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda} dia={agendasOrded[dia]} Reload={ReloadAgenda}/> : null}
+      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.nome}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda} dia={agendasOrded[dia]} Reload={ReloadAgenda} checkAgendamento={(userGym, horario)=>Agendamento(userGym, horario)} updateAgenda={carregar}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
       {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)} Reload={ReloadAgenda}/> : null}
     </div>

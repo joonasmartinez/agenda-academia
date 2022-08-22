@@ -3,7 +3,7 @@ import {React, useState} from 'react';
 import { Number } from '../number';
 import * as C from './styles';
 
-export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAgendamento, updateAgenda}) => {
+export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAgendamento, updateAgenda, isOnAgenda}) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
     const [valueInput, setValueInput] = useState(0);
     const [acompanhantes, setAcompanhantes] = useState([{nome, casa}]); //Usuários Gym
@@ -32,6 +32,8 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
             result
         )
     }
+    
+    // 21/08/2022 22:04 => PARAMOS EM: Bloquear reserva de nome convidado vazio. Fazer esta checagem.
 
     useEffect(()=>{
         console.log(acompanhantes)
@@ -40,15 +42,19 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
     const create = async ()=>{
         let userGym = [];
         for(let a = 0; a <= valueInput; a++){
-            if(acompanhantes[a]=="" || acompanhantes[a] == undefined){
+            console.log("teste:",acompanhantes[a])
+            if(acompanhantes[a]=={casa:user.casa, nome: ""} || acompanhantes[a] == undefined){
                 return (setWarning(true), setTimeout(()=>{setWarning(false)}, 4000))
             }
             userGym.push(acompanhantes[a])
         }
         console.log('Usuarios:',userGym)
+        isOnAgenda(userGym, horario);
 
         if(await checkAgendamento(userGym, horario)){
             console.log("Criado com sucesso.")
+            alert("Reservado com sucesso!")
+            setTimeout(()=>{ModalAgenda(false)},1500)
         }else{
             
             console.log("Horario indisponivel");

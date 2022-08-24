@@ -1,19 +1,20 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs } from "firebase/firestore";
+import 'dotenv/config';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBxkDGrr__3DYSvFTU4HkZKkJH7UZpy3JA",
-  authDomain: "agendamento-3466d.firebaseapp.com",
-  projectId: "agendamento-3466d",
-  storageBucket: "agendamento-3466d.appspot.com",
-  messagingSenderId: "261205098783",
-  appId: "1:261205098783:web:9db208c607fc041703302a",
-  measurementId: "G-M80X3C7KRM"
+  apiKey: process.env.FIREBASE_CONFIG_API_KEY,
+  authDomain: process.env.FIREBASE_CONFIG_AUTH_DOMAIN,
+  projectId: process.env.FIREBASE_CONFIG_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_CONFIG_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIREBASE_CONFIG_MESSAGING_SENDER_ID,
+  appId: process.env.FIREBASE_CONFIG_APP_ID,
+  measurementId: process.env.FIREBASE_CONFIG_MEASUREMENT_ID
 };
 
 

@@ -7,7 +7,7 @@ import { Agendar } from './components/agendar';
 import { Registrar } from './components/registrar';
 import { Agendas } from './components/agendas';
 import { db} from './utils/firebase';
-import { getDocs, getDoc, collection, doc, addDoc, deleteDoc, orderBy, setDoc, updateDoc } from "firebase/firestore";
+import { getDocs, getDoc, collection, doc, addDoc, deleteDoc, orderBy, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 
 function App() {
 
@@ -28,6 +28,7 @@ function App() {
     await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
   }
 
+  
   const orderByTime = (agenda)=>{
     agenda.sort((a,b)=>{
       a = a.id.split('.')
@@ -36,12 +37,21 @@ function App() {
       b = new Date(`${b[1]}/${b[0]}/${b[2]}`).getTime()
       if(a>b) return 1;
       if(a<b) return -1;
-  })
-  setAgendasOrded(agenda)
+    })
+    setAgendasOrded(agenda)
   }
   useEffect(()=>{
     orderByTime(agendas)
   },[agendas])
+
+  useEffect(()=>{
+    onSnapshot(collection(db, 'agendas'), (doc) => {
+        console.log("AGENDA ATUALIZADA!")
+        console.log(doc.docChanges())
+        carregar()
+        console.log(doc)
+      })
+  }, [])
   useEffect(()=>{
 
     carregar();

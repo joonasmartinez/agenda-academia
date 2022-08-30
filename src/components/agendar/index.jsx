@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import {React, useState} from 'react';
 import { Number } from '../number';
+import { getDocs, getDoc, collection, onSnapshot } from "firebase/firestore";
+import { db } from '../../utils/firebase'; 
 import * as C from './styles';
 
 export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAgendamento, updateAgenda, isOnAgenda}) => {
@@ -10,9 +12,14 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
     const [warning, setWarning] = useState(false);
     
     useEffect(()=>{
-        const intervalo = setInterval(()=>{updateAgenda()}, 1000)
+        // const intervalo = setInterval(()=>{updateAgenda()}, 1000)
 
-        return () => clearInterval(intervalo);
+        // return () => clearInterval(intervalo);
+        // onSnapshot(collection(db, 'agendas'), (doc) => {
+        //     console.log("AGENDA ATUALIZADA!")
+            // updateAgenda()
+            // console.log(doc.data())
+        //   })
     },[])
 
     const createAcompanhante = ()=>{

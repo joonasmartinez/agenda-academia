@@ -45,16 +45,17 @@ function App() {
   },[agendas])
 
   useEffect(()=>{
+    carregar();
     onSnapshot(collection(db, 'agendas'), (doc) => {
         console.log("AGENDA ATUALIZADA!")
-        console.log(doc.docChanges())
-        carregar()
+        console.log('doc',doc.docChanges().newIndex)
+        carregar();
+        console.log(agendas)
         console.log(doc)
       })
   }, [])
   useEffect(()=>{
 
-    carregar();
     setAgendas([])
     if(localStorage.getItem('user')) {
       setUser(JSON.parse(localStorage.getItem('user')))
@@ -137,7 +138,7 @@ function App() {
         newUsers.push(`${userGym[i].nome}, ${userGym[i].casa}`)
 
       }
-      // await updateDoc(doc(db, 'agendas', agendas[dia].id), {[horario]:newUsers}).then(console.log("Updated!"))
+      await updateDoc(doc(db, 'agendas', agendas[dia].id), {[horario]:newUsers}).then(console.log("Updated!"))
       return true;
     }else{
       return false;

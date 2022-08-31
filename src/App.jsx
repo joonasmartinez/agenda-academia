@@ -118,8 +118,7 @@ function App() {
   }
 
   const isOnAgenda = (newUsers, horario)=>{
-    
-    if(Object.values(newUsers).includes(`${user.nome}, ${user.casa}`)){
+    if(agendas[dia].data()[horario].includes(`${newUsers.name}, ${newUsers.casa}`)){
       return true
     }
     return false;

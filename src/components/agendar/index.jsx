@@ -11,17 +11,6 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
     const [acompanhantes, setAcompanhantes] = useState([{nome, casa}]); //Usuários Gym
     const [warning, setWarning] = useState(false);
     
-    useEffect(()=>{
-        // const intervalo = setInterval(()=>{updateAgenda()}, 1000)
-
-        // return () => clearInterval(intervalo);
-        // onSnapshot(collection(db, 'agendas'), (doc) => {
-        //     console.log("AGENDA ATUALIZADA!")
-            // updateAgenda()
-            // console.log(doc.data())
-        //   })
-    },[])
-
     const createAcompanhante = ()=>{
         const result = [];
         for(let a=1;a<=valueInput; a++){
@@ -39,12 +28,6 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
             result
         )
     }
-    
-    // 21/08/2022 22:04 => PARAMOS EM: Bloquear reserva de nome convidado vazio. Fazer esta checagem.
-
-    useEffect(()=>{
-        console.log(acompanhantes)
-    },[acompanhantes])
 
     const create = async ()=>{
         let userGym = [];
@@ -55,7 +38,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
             }
             userGym.push(acompanhantes[a])
         }
-        console.log('Usuarios:',userGym)
+        // console.log('Usuarios:',userGym)
         isOnAgenda(userGym, horario);
 
         if(await checkAgendamento(userGym, horario)){
@@ -68,6 +51,8 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
         }
     }
 
+    console.log(isOnAgenda({name:user.nome, casa:user.casa}, horario))
+    
     return (
             <C.align >
                 <C.Agendar >
@@ -100,6 +85,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
 
                         <h6>*Máximo de 3 pessoas por horário.</h6>
                     <C.Footer>
+                        {}
                         {dia.data()[horario].length == 3 ? <C.ButtonDisable>Indisponível</C.ButtonDisable> : <C.Button onClick={()=>{create()}}>Confirmar</C.Button>}
                         <C.Button primary onClick={()=>{ModalAgenda(false)}}>Cancelar</C.Button>
                     </C.Footer>

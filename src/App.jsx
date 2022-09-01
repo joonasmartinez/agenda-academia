@@ -22,6 +22,7 @@ function App() {
   const [agendasOrded, setAgendasOrded] = useState([]);
   const [modalAdmin, setModalAdmin] = useState(false);
   const [dia, setDia] = useState(0);
+  const MAX_USER_PER_HOUR = 3;
 
   const carregar = async() => {
     await getDocs(collection(db, 'agendas')).then(res => {setAgendas([]);res.docs.map(agenda => setAgendas(prev => [...prev, agenda]))})
@@ -46,12 +47,8 @@ function App() {
 
   useEffect(()=>{
     carregar();
-    onSnapshot(collection(db, 'agendas'), (doc) => {
-        console.log("AGENDA ATUALIZADA!")
-        console.log('doc',doc.docChanges().newIndex)
+    onSnapshot(collection(db, 'agendas'), () => {
         carregar();
-        console.log(agendas)
-        console.log(doc)
       })
   }, [])
   useEffect(()=>{
@@ -126,21 +123,46 @@ function App() {
 
   const Agendamento = async (userGym = '', horario)=>{
     await carregar();
+    onSnapshot(doc(db, 'agendas', agendas[dia].id), (snapshot)=>{
+      if(snapshot.metadata.hasPendingWrites == true){
+        console.log('Alteração detectada.', snapshot.data()[horario])
+      }
+    })
     console.log(agendas[dia].data()[horario].length, userGym)
-    if((agendas[dia].data()[horario].length + userGym.length)<=3){
+    if((agendas[dia].data()[horario].length + userGym.length)<=MAX_USER_PER_HOUR){
       let newUsers = {};
       await getDoc(doc(db, 'agendas', agendas[dia].id)).then(res => newUsers=res.data()[horario])
-      if(isOnAgenda(newUsers)){
-        return alert('Você já está com este horário marcado!')
-      }
+      // console.log(newUsers)
       for(let i = 0; i<userGym.length;i++){
         newUsers.push(`${userGym[i].nome}, ${userGym[i].casa}`)
 
       }
       await updateDoc(doc(db, 'agendas', agendas[dia].id), {[horario]:newUsers}).then(console.log("Updated!"))
+      console.log("Dia",agendas[dia].data()[horario])
       return true;
     }else{
       return false;
+    }
+  }
+
+  const LiberarHorario = async (horario)=>{
+    let newUsers = agendas[dia].data()[horario];
+
+    agendas[dia].data()[horario].forEach(item => {
+      let userSplit = item.split(',')
+
+      if(Number(userSplit[1]) === Number(user.casa)) {
+        newUsers.splice(newUsers.indexOf(item), 1)
+      }
+    })
+    console.log("Final", newUsers)
+    try{
+      await updateDoc(doc(db, 'agendas', agendas[dia].id), {[horario]:newUsers})
+      return true
+
+    }catch (e){
+      console.error(e)
+      return false
     }
   }
 
@@ -152,7 +174,7 @@ function App() {
       <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
       <Dia getDia={agendasOrded[dia]} NextDia={UpDia} PrevDia={DownDia}/>
       <Horarios Modal={ openModal } getData={getData} getHoras={agendasOrded[dia]}/>
-      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.nome}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda} dia={agendasOrded[dia]} Reload={ReloadAgenda} checkAgendamento={(userGym, horario)=>Agendamento(userGym, horario)} updateAgenda={carregar} isOnAgenda={(userGym, horario)=>isOnAgenda(userGym, horario)}/> : null}
+      {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.nome}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda} dia={agendasOrded[dia]} Reload={ReloadAgenda} checkAgendamento={(userGym, horario)=>Agendamento(userGym, horario)} updateAgenda={carregar} isOnAgenda={(userGym, horario)=>isOnAgenda(userGym, horario)} liberarHorario={(horario)=>{LiberarHorario(horario)}}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
       {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)} Reload={ReloadAgenda}/> : null}
     </div>

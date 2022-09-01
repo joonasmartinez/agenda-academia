@@ -105,6 +105,7 @@ export const Button = styled.button`
     }
 
 `
+
 export const ButtonDisable = styled.button`
 
     background: #696969;

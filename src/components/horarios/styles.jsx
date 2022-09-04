@@ -20,6 +20,7 @@ export const horas = styled.h4`
     max-height: 40px;
     border-radius:10px;
     border-left: 1px solid #307e9c;
+    border-right:${props => props.isOnAgenda ? "green" : 'none'};
     margin:5px;
     box-shadow:0 0 3px 0.5px #00000028;
     cursor: pointer;

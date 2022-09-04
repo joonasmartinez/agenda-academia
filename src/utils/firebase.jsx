@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore, getDocs } from "firebase/firestore";
-// import 'dotenv/config';
+import { getDatabase } from "firebase/database";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,11 +14,13 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_FIREBASE_CONFIG_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_CONFIG_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_CONFIG_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_CONFIG_MEASUREMENT_ID
+  measurementId: import.meta.env.VITE_FIREBASE_CONFIG_MEASUREMENT_ID,
+  databaseURL: import.meta.env.VITE_FIREBASE_CONFIG_DATABASE_URL
 };
 
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+export const databaseRealTime = getDatabase(app)
 export const db = getFirestore(app);
 

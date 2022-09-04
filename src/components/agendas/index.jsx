@@ -6,7 +6,7 @@ import { getDocs, getDoc, setDoc, collection, doc, addDoc, deleteDoc, deleteFiel
 import { IoMdClose } from 'react-icons/io'
 import { BsPencilFill } from 'react-icons/bs'
 
-export const Agendas = ({Agendas, onClose, Reload}) => {
+export const Agendas = ({Agendas, onClose}) => {
 
     const [editingAgenda, setEditingAgenda] = useState('');
     const [criarOn, setCriaron] = useState(false)
@@ -24,7 +24,7 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
         }
 
         await setDoc(doc(db, "agendas", date), horariosToAdd).then(()=>{setCriaron(false);
-        Reload();});
+        });
         
     }
     const update = (data)=>{
@@ -75,7 +75,7 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
         <C.Container>
             <C.Header>
                 <C.Title>Administração</C.Title> 
-                <C.Close onClick={()=>{onClose();Reload()}}><IoMdClose/></C.Close>
+                <C.Close onClick={()=>{onClose()}}><IoMdClose/></C.Close>
             </C.Header>
             {editOn && !criarOn && <>
             
@@ -84,10 +84,10 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
                 {agendaToEdit == '' ?  <C.Title>Carregando...</C.Title> : (
                     <>
                     <C.Title>Horarios da agenda - Clique para remover</C.Title>
-                    <C.quadroHorario>{Object.keys(agendaToEdit).sort().map(item => <><C.horario onClick={()=>{updateEdit(item)}}>{item}</C.horario></>)}</C.quadroHorario>
+                    <C.quadroHorario>{Object.keys(agendaToEdit).sort().map((item, index) => <><C.horario key={index} onClick={()=>{updateEdit(item)}}>{item}</C.horario></>)}</C.quadroHorario>
                     <C.Title>Deseja adicionar novo horário? - Clique para adicionar</C.Title>
-                    <C.quadroHorario>{Object.keys(horariosToAdd).map(item =><C.horario onClick={()=>{updateEdit(item)}}>{item}</C.horario>)}</C.quadroHorario>
-                    <C.Button onClick={()=>{setDoc(doc(db, 'agendas', editingAgenda), agendaToEdit);Reload()}}>Confirmar</C.Button>
+                    <C.quadroHorario>{Object.keys(horariosToAdd).map((item, index) =><C.horario key={index} onClick={()=>{updateEdit(item)}}>{item}</C.horario>)}</C.quadroHorario>
+                    <C.Button onClick={()=>{setDoc(doc(db, 'agendas', editingAgenda), agendaToEdit)}}>Confirmar</C.Button>
                     </>
                 )}
                 </>
@@ -97,8 +97,8 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
                 <>
                 <h3>{nextAgenda().replaceAll('.','/')}</h3>
                 <C.Title>Deseja remover algum horário? Basta clicar nele.</C.Title>
-                    <C.quadroHorario>{Object.keys(horariosToAdd).map(item =>  
-                        <C.horario key={item} onClick={()=>{ update(item) }}>
+                    <C.quadroHorario>{Object.keys(horariosToAdd).map((item, index) =>  
+                        <C.horario key={index} onClick={()=>{ update(item) }}>
                             {item}
                         </C.horario>)}
                     </C.quadroHorario>
@@ -114,7 +114,7 @@ export const Agendas = ({Agendas, onClose, Reload}) => {
 
                         <C.horario >{item.id}</C.horario> 
 
-                        <C.horario><IoMdClose onClick={()=>{if(confirm("deseja realmente excluir esta agenda?")) {deleteDoc(doc(db, 'agendas', item.id));Reload();}}}/></C.horario>
+                        <C.horario><IoMdClose onClick={()=>{if(confirm("deseja realmente excluir esta agenda?")) {deleteDoc(doc(db, 'agendas', item.id));}}}/></C.horario>
 
                         <C.horario><BsPencilFill onClick={()=> {setEditon(true); AgendaEdit(item.id)} }/></C.horario> 
 

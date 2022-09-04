@@ -31,9 +31,6 @@ export const Horarios = ({Modal, getData, getHoras}) => {
             
         }catch{}
     }, [data])
-    
-    useEffect(()=>{
-    }, [horarios])
 
     return (
         <>

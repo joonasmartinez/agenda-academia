@@ -5,7 +5,7 @@ import { getDocs, getDoc, collection, onSnapshot } from "firebase/firestore";
 import { db } from '../../utils/firebase'; 
 import * as C from './styles';
 
-export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAgendamento, updateAgenda, isOnAgenda, liberarHorario}) => {
+export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento, isOnAgenda, liberarHorario}) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
     const [valueInput, setValueInput] = useState(0);
     const [acompanhantes, setAcompanhantes] = useState([{nome, casa}]); //Usuários Gym
@@ -82,7 +82,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, Reload, checkAge
 
                         <h6>*Máximo de 3 pessoas por horário.</h6>
                     <C.Footer>
-                        {isOnAgenda({name:user.nome, casa:user.casa}, horario) ? <C.Button onClick={()=>{liberarHorario(horario)}}>Liberar horario</C.Button> : dia.data()[horario].length == 3 ? <C.ButtonDisable>Indisponível</C.ButtonDisable> : <C.Button onClick={()=>{create()}}>Confirmar</C.Button>}
+                        {isOnAgenda(horario) ? <C.Button onClick={()=>{liberarHorario(horario)}}>Liberar horario</C.Button> : dia.data()[horario].length == 3 ? <C.ButtonDisable>Indisponível</C.ButtonDisable> : <C.Button onClick={()=>{create()}}>Confirmar</C.Button>}
                         <C.Button primary onClick={()=>{ModalAgenda(false)}}>Cancelar</C.Button>
                         
                     </C.Footer>

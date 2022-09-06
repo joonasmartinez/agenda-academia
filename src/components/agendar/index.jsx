@@ -55,7 +55,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
                 <C.Agendar >
                     <C.Header>
                         <h4>Agendar horário</h4>
-                        <h5>{dia.id.replaceAll('.','/')} - {horario} horas</h5>
+                        <h5>{dia.dia.replaceAll('-', '/')} - {horario} horas</h5>
                     </C.Header>
 
                     <C.Section>
@@ -64,7 +64,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
                             <label><C.b>{`Sua casa:`}</C.b> {user.casa}</label>
                         </C.Dados>
                         <C.Header>
-                            {(dia.data()[horario].length + 1) >= 3 ? <p>Acompanhante indisponível!</p> : 
+                            {(dia[horario] + 1) >= 3 ? <p>Acompanhante indisponível!</p> : 
                             <>
                             <h6>Levar acompanhante com você?</h6>
                             <Number changeValue={(val)=>setValueInput(val)}/>
@@ -77,12 +77,13 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
                         <C.Acomp>
                         </C.Acomp>
                         <C.b>Já reservados neste horário: </C.b>{}
-                        <C.Dados>{dia.data()[horario].length == 0 ? <C.NomeReser empty>Sem reservas até o momento.</C.NomeReser> : (Object.values(dia.data()[horario].map(nome => <C.NomeReser key={nome}>{nome}</C.NomeReser>)))}</C.Dados>
+                        {/* {console.log(dia.horarios[horario].length)} */}
+                        <C.Dados>{dia.horarios[horario].length == 1 && dia.horarios[horario][0] == ''? <C.NomeReser empty>Sem reservas até o momento.</C.NomeReser> : (dia.horarios[horario].map(nome => <C.NomeReser key={nome}>{nome}</C.NomeReser>))}</C.Dados>
                     </C.Section>
 
                         <h6>*Máximo de 3 pessoas por horário.</h6>
                     <C.Footer>
-                        {isOnAgenda(horario) ? <C.Button onClick={()=>{liberarHorario(horario)}}>Liberar horario</C.Button> : dia.data()[horario].length == 3 ? <C.ButtonDisable>Indisponível</C.ButtonDisable> : <C.Button onClick={()=>{create()}}>Confirmar</C.Button>}
+                        {isOnAgenda(horario) ? <C.Button onClick={()=>{liberarHorario(horario)}}>Liberar horario</C.Button> : dia.horarios[horario].length == 3 ? <C.ButtonDisable>Indisponível</C.ButtonDisable> : <C.Button onClick={()=>{create()}}>Confirmar</C.Button>}
                         <C.Button primary onClick={()=>{ModalAgenda(false)}}>Cancelar</C.Button>
                         
                     </C.Footer>

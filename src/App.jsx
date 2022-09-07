@@ -32,7 +32,7 @@ function App() {
     // await getDocs(collection(db, 'agendas')).then(res => {setAgendas([]);res.docs.map(agenda => setAgendas(prev => [...prev, agenda]))})
     // await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
     // console.log("TUDO CARREGADO")
-    await get(ref(databaseRealTime)).then(data => {setAgendas(data.val()); setAgendasRefOrded(data.val())})
+    await get(ref(databaseRealTime)).then(data => {setAgendas(data.val()); setAgendasRefOrded(data.val()); console.log(data.val())})
   } 
 
   // async function write (dados){
@@ -46,6 +46,8 @@ function App() {
   const orderByTime = (agenda)=>{
     if(agendas == []) return 0;
     agenda.sort((a,b)=>{
+      console.log('A',a)
+      console.log('B',b)
       a = a.dia.split('-')
       a = new Date(`${a[1]}/${a[0]}/${a[2]}`).getTime()
       b = b.dia.split('-')
@@ -63,6 +65,9 @@ function App() {
   useEffect(()=>{
     console.log('ref',agendasRefOrded)
   },[agendasRefOrded])
+  useEffect(()=>{
+
+  },[agendasOrded])
 
   useEffect(()=>{
       // if(!(isNaN(dia))) {console.log(dia, " é um numero"); 
@@ -70,16 +75,19 @@ function App() {
         console.log('agenda atual',agendasOrded[dia].dia, "|||", "agenda ref", agendasRefOrded.findIndex(item => item.dia == agendasOrded[dia].dia))
         refAgenda = agendasRefOrded.findIndex(item => item.dia == agendasOrded[dia].dia);
         onValue(ref(databaseRealTime, `${refAgenda}/horarios`), (snapshot) => {
-        console.log("Alteração detectada val",snapshot.val())
-        // let n = agendasOrded[dia].horarios
-        setAgendas(prev => [...prev, prev[dia].horarios=snapshot.val()])
-        console.log(agendas)
+          console.log("Alteração detectada val",snapshot.val())
+          // console.log(agendasOrded[dia].horarios)
+          let newAgenda = Object.assign({}, agendasOrded)
+          newAgenda[dia].horarios=snapshot.val()
+          setAgendas(newAgenda)
+          // console.log('AGENDA ATUALIZADA:',newAgenda)
+          // let n = agendasOrded[dia].horarios
+          // console.log(agendas)
       })
       }catch(e){
-
       }
       
-  }, [dia])
+  }, [agendasOrded[dia]])
 
   useEffect(()=>{
     

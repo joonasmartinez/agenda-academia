@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Header } from './components/header';
 import { Horarios } from './components/horarios';
 import { Dia } from './components/dia';
@@ -9,7 +9,7 @@ import { Agendas } from './components/agendas';
 import { db} from './utils/firebase';
 import { databaseRealTime } from './utils/firebase'
 import { getDocs, getDoc, collection, doc, addDoc, deleteDoc, orderBy, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
-import { ref, get, child, set, onValue, runTransaction } from 'firebase/database'
+import { ref, get, child, set, onValue, runTransaction, off, goOffline, update } from 'firebase/database'
 
 function App() {
 
@@ -23,31 +23,23 @@ function App() {
   const [agendas, setAgendas] = useState([]);
   const [agendasOrded, setAgendasOrded] = useState([]);
   const [agendasRefOrded, setAgendasRefOrded] = useState([]);
-  let refAgenda=0;
   const [modalAdmin, setModalAdmin] = useState(false);
-  const [dia, setDia] = useState('Vazio');
+  const [dia, setDia] = useState(0);
   const MAX_USER_PER_HOUR = 3;
+  const [refAgenda, setRefAgenda]= useState(-1);
+  const [agendaAtualizada, setAgendaAtualizada] = useState([]);
 
   const carregar = async() => {
     // await getDocs(collection(db, 'agendas')).then(res => {setAgendas([]);res.docs.map(agenda => setAgendas(prev => [...prev, agenda]))})
     // await getDocs(collection(db, 'users')).then(res => setUsers(res.docs.map((doc) => ({...doc.data(), id: doc.id }))))
-    // console.log("TUDO CARREGADO")
-    await get(ref(databaseRealTime)).then(data => {setAgendas(data.val()); setAgendasRefOrded(data.val()); console.log(data.val())})
+    console.log("TUDO CARREGADO")
+    await get(ref(databaseRealTime)).then(data => {setAgendas(data.val()); setAgendasRefOrded(data.val())})
+    
   } 
-
-  // async function write (dados){
-  //   console.log("Sobre escrevendo dados...")
-  //   console.log("dados",dados)
-  //   await set(ref(databaseRealTime),
-  //   dados
-  //     ).then(e=>{console.log("Executado:",e)})
-  // }
   
   const orderByTime = (agenda)=>{
     if(agendas == []) return 0;
     agenda.sort((a,b)=>{
-      console.log('A',a)
-      console.log('B',b)
       a = a.dia.split('-')
       a = new Date(`${a[1]}/${a[0]}/${a[2]}`).getTime()
       b = b.dia.split('-')
@@ -57,39 +49,63 @@ function App() {
     })
     setAgendasOrded(agenda)
   }
-  // const novaAgenda = [{dia:'01-08-2022', horarios:{'06:00':[''],'07:00':[''],'08:00':[''],'09:00':[''],'10:00':[''],'11:00':[''],'12:00':[''],'13:00':[''],'14:00':[''],'15:00':[''],'16:00':[''],'17:00':[''],'18:00':[''],'19:00':[''],'20:00':[''],'21:00':[''],'22:00':[''],'23:00':[''],}}, {dia:'02-10-2022', horarios:{'06:00':[''],'07:00':[''],'08:00':[''],'09:00':[''],'10:00':[''],'11:00':[''],'12:00':[''],'13:00':[''],'14:00':[''],'15:00':[''],'16:00':[''],'17:00':[''],'18:00':[''],'19:00':[''],'20:00':[''],'21:00':[''],'22:00':[''],'23:00':[''],}}, {dia:'03-09-2022', horarios:{'06:00':[''],'07:00':[''],'08:00':[''],'09:00':[''],'10:00':[''],'11:00':[''],'12:00':[''],'13:00':[''],'14:00':[''],'15:00':[''],'16:00':[''],'17:00':[''],'18:00':[''],'19:00':[''],'20:00':[''],'21:00':[''],'22:00':[''],'23:00':[''],}}, {dia:'04-07-2022', horarios:{'06:00':[''],'07:00':[''],'08:00':[''],'09:00':[''],'10:00':[''],'11:00':[''],'12:00':[''],'13:00':[''],'14:00':[''],'15:00':[''],'16:00':[''],'17:00':[''],'18:00':[''],'19:00':[''],'20:00':[''],'21:00':[''],'22:00':[''],'23:00':[''],}}]
-  // set(ref(databaseRealTime),novaAgenda)
+
   useEffect(()=>{
     orderByTime(agendas)
+    console.log("MUDANDO:", agendas)
+    console.log("Mudança detectada")
   },[agendas])
+
   useEffect(()=>{
-    console.log('ref',agendasRefOrded)
+    setRefAgenda(agendasRefOrded.findIndex(item => item.dia === agendas[dia].dia.replaceAll('.', '-')))
   },[agendasRefOrded])
+  
   useEffect(()=>{
+    setRefAgenda(agendasRefOrded.findIndex(item => item.dia === agendas[dia].dia.replaceAll('.', '-')))
+  }, [dia])
 
-  },[agendasOrded])
-
-  useEffect(()=>{
-      // if(!(isNaN(dia))) {console.log(dia, " é um numero"); 
-      try{
-        console.log('agenda atual',agendasOrded[dia].dia, "|||", "agenda ref", agendasRefOrded.findIndex(item => item.dia == agendasOrded[dia].dia))
-        refAgenda = agendasRefOrded.findIndex(item => item.dia == agendasOrded[dia].dia);
-        onValue(ref(databaseRealTime, `${refAgenda}/horarios`), (snapshot) => {
-          console.log("Alteração detectada val",snapshot.val())
-          // console.log(agendasOrded[dia].horarios)
-          let newAgenda = Object.assign({}, agendasOrded)
-          newAgenda[dia].horarios=snapshot.val()
-          setAgendas(newAgenda)
-          // console.log('AGENDA ATUALIZADA:',newAgenda)
-          // let n = agendasOrded[dia].horarios
-          // console.log(agendas)
-      })
-      }catch(e){
-      }
+  // useEffect(()=>{
+  //   if(refAgenda!=-1){
+  //     console.log("Modificando na ref", refAgenda+'/horarios')
       
-  }, [agendasOrded[dia]])
+  //     onValue(ref(databaseRealTime, refAgenda+"/horarios"),  (snapshot) => {
+  //       console.log("ALTERANDO SOMENTE HORARIO")
+  //       console.log('velha',agendas[dia])
+  //       const newAgenda = agendasOrded;
+  //       newAgenda[dia].horarios = snapshot.val()
+  //       console.log('nova:',newAgenda)
+  //       // newAgenda[dia].horarios = snapshot.val();
+  //       // console.log(agendas[dia].horarios)
+  //       // setAgendas([{dia:'00-00-00', horarios:{'':[]}}], setAgendas(newAgenda))
+        
+
+  //       , {onlyOnce:true}
+        
+  //     })
+  //   }
+
+  // }, [refAgenda])
 
   useEffect(()=>{
+    onValue(ref(databaseRealTime), (snapshot) => {
+      console.log(snapshot.val())
+      console.log("ALTERANDO TUDO")
+      //  console.log("Alteração detectada val em",refAgenda,snapshot.val())
+      let newAgenda = agendasOrded
+      // console.log(snapshot.val(), "AgendasOrded:",agendasOrded)
+      // console.log(dia)
+      newAgenda=snapshot.val()
+      // console.log('nre',newAgenda)
+      setAgendas(snapshot.val())
+      setAgendasRefOrded(snapshot.val())
+      console.log('data', snapshot.val())
+    })
+    // carregar()
+
+  },[])
+
+
+  // useEffect(()=>{
     
 
     // runTransaction(ref(databaseRealTime, 'agendas/01-09-2022/06:00'), (x)=>{
@@ -123,12 +139,14 @@ function App() {
     // }))
     // let obj = {...conjunto}
     // console.log('aqui', obj)
-  }, [])
+  // }, [])
+
   useEffect(()=>{
     
     setAgendas([])
-    setDia(0)
-    carregar()
+
+    
+
     if(localStorage.getItem('user')) {
       setUser(JSON.parse(localStorage.getItem('user')))
       return setRegister(false);
@@ -176,6 +194,7 @@ function App() {
   const UpDia = ()=>{
     if(dia+2>agendas.length)return console.log("Limite up")
     setDia(dia+1)
+  
   }
   const DownDia = ()=>{
     if(dia-1<0)return console.log("Limite down")
@@ -183,57 +202,54 @@ function App() {
   }
 
   const isOnAgenda = (horario)=>{
-    if(agendas[dia].horarios[horario].includes(`${user.nome}, ${user.casa}`)){
-      return true
+    try{
+      console.log("iSoNaGENDA ANALISADO", (agendas[dia].horarios[horario].includes(`${user.nome}, ${user.casa}`)))
+      if(agendas[dia].horarios[horario].includes(`${user.nome}, ${user.casa}`)){
+        return true;
+      }
+      return false;
+
+    }catch(e){
+
     }
-    return false;
   }
 
   const Agendamento = async (userGym = '', horario)=>{
-    let snap = onSnapshot(doc(db, 'agendas', agendas[dia].id), (snapshot)=>{
-      if(snapshot.metadata.hasPendingWrites === true){
+    
+    console.log(userGym, horario)
 
-        // console.log('hasPendingTrue.', snapshot.data()[horario])
+    runTransaction(ref(databaseRealTime,  refAgenda+"/horarios/"+horario), (x)=>{
+      console.log("Current Data", x)
+      const userUpdate = x;
+      if(userUpdate[0]=='')userUpdate.length=0;
+      if((x.length+userGym.length)<=MAX_USER_PER_HOUR){
+        console.log("PERMITIDO")
+        userGym.forEach(i => userUpdate.push(`${i.nome}, ${i.casa}`))
+        return userUpdate;
+      }else{
+        console.log("Limite excedido!")
       }
-      // console.log('hasPendingfalse.', snapshot.data()[horario])
     })
-    // console.log(agendas[dia].data()[horario].length, userGym)
-    if((agendas[dia].data()[horario].length + userGym.length)<=MAX_USER_PER_HOUR){
-      let newUsers = {};
-      await getDoc(doc(db, 'agendas', agendas[dia].id)).then(res => newUsers=res.data()[horario])
-      // console.log(newUsers)
-      for(let i = 0; i<userGym.length;i++){
-        newUsers.push(`${userGym[i].nome}, ${userGym[i].casa}`)
 
-      }
-      await updateDoc(doc(db, 'agendas', agendas[dia].id), {[horario]:newUsers}).then(console.log("Updated!"))
-      // console.log("Dia",agendas[dia].data()[horario])
-      snap()
-      return true;
-    }else{
-      return false;
-    }
   }
 
   const LiberarHorario = async (horario)=>{
-    let newUsers = agendas[dia].data()[horario];
+    let getUsers = agendas[dia].horarios[horario]
+    let newUsers = [];
+    newUsers.length=0;
 
-    agendas[dia].data()[horario].forEach(item => {
-      let userSplit = item.split(',')
+    getUsers.forEach(item => {if(item.replaceAll(' ', '').split(',')[1] != user.casa){newUsers.push(item)}})
 
-      if(Number(userSplit[1]) === Number(user.casa)) {
-        newUsers.splice(newUsers.indexOf(item), 1)
-      }
-    })
-    // console.log("Final", newUsers)
-    try{
-      await updateDoc(doc(db, 'agendas', agendas[dia].id), {[horario]:newUsers})
-      return true
+    runTransaction(ref(databaseRealTime,  refAgenda+"/horarios/"+horario), (x)=>{
+        console.log("Current Data", x, newUsers)
+        if(horario!=undefined || horario!= null){
+          console.log("Atualizado.", newUsers.length)
+          if(newUsers.length == 0) return newUsers=['']
+          return newUsers
+        }
+      })
+    // await update(ref(databaseRealTime, refAgenda+"/horarios/"), {[horario]:newUsers})
 
-    }catch (e){
-      console.error(e)
-      return false
-    }
   }
 
 

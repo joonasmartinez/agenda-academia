@@ -59,7 +59,7 @@ export const Agendas = ({Agendas, onClose}) => {
 
     const nextAgenda = ()=>{
 
-        const date = Agendas[Agendas.length-1].id.split('.')
+        const date = Agendas[Agendas.length-1].dia.split('-')
         try{
             let d = new Date(`${date[1]}/${Number(date[0])}/${date[2]}`)
             d.setDate(d.getDate()+1)
@@ -112,11 +112,11 @@ export const Agendas = ({Agendas, onClose}) => {
                 <C.agendas column>{Agendas.map((item, index) => (
                     <C.agendas key={index}  >
 
-                        <C.horario >{item.id}</C.horario> 
+                        <C.horario >{item.dia}</C.horario> 
 
                         <C.horario><IoMdClose onClick={()=>{if(confirm("deseja realmente excluir esta agenda?")) {deleteDoc(doc(db, 'agendas', item.id));}}}/></C.horario>
 
-                        <C.horario><BsPencilFill onClick={()=> {setEditon(true); AgendaEdit(item.id)} }/></C.horario> 
+                        <C.horario><BsPencilFill onClick={()=> {setEditon(true); AgendaEdit(item.dia)} }/></C.horario> 
 
                     </C.agendas>))}
                 </C.agendas>

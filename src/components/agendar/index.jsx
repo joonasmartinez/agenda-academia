@@ -1,8 +1,5 @@
-import { useEffect } from 'react';
 import {React, useState} from 'react';
 import { Number } from '../number';
-import { getDocs, getDoc, collection, onSnapshot } from "firebase/firestore";
-import { db } from '../../utils/firebase'; 
 import * as C from './styles';
 
 export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento, isOnAgenda, liberarHorario}) => {
@@ -10,11 +7,14 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
     const [valueInput, setValueInput] = useState(0);
     const [acompanhantes, setAcompanhantes] = useState([{nome, casa}]); //Usuários Gym
     const [warning, setWarning] = useState(false);
-    
+    console.log(dia.horarios[horario])
     const createAcompanhante = ()=>{
+        const horarioDia = dia.horarios[horario]
         const result = [];
         for(let a=1;a<=valueInput; a++){
-            if((dia.data()[horario].length + a) < 3){
+            
+            if(horarioDia[0]==''){horarioDia.length=0}
+            if((horarioDia.length + a) < 3){
                 result.push(<C.InputConv key={a} onChange={(name)=>{
                     let data = acompanhantes;
                     data[a] = {nome:name.target.value, casa}
@@ -38,7 +38,6 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
             }
             userGym.push(acompanhantes[a])
         }
-        // console.log('Usuarios:',userGym)
         if(await checkAgendamento(userGym, horario)){
             console.log("Criado com sucesso.")
             alert("Reservado com sucesso!")
@@ -64,7 +63,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
                             <label><C.b>{`Sua casa:`}</C.b> {user.casa}</label>
                         </C.Dados>
                         <C.Header>
-                            {(dia[horario] + 1) >= 3 ? <p>Acompanhante indisponível!</p> : 
+                            {(dia.horarios[horario].length + 1) >= 3 ? <p>Acompanhante indisponível!</p> : 
                             <>
                             <h6>Levar acompanhante com você?</h6>
                             <Number changeValue={(val)=>setValueInput(val)}/>

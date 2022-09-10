@@ -28,7 +28,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
         )
     }
 
-    const create = async ()=>{
+    const create = ()=>{
         let userGym = [];
         for(let a = 0; a <= valueInput; a++){
             // console.log("teste:",acompanhantes[a])
@@ -37,7 +37,7 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
             }
             userGym.push(acompanhantes[a])
         }
-        if(await checkAgendamento(userGym, horario)){
+        if( checkAgendamento(userGym, horario)){
             console.log("Criado com sucesso.")
             alert("Reservado com sucesso!")
             // setTimeout(()=>{ModalAgenda(false)},1500)
@@ -62,7 +62,6 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
                             <label><C.b>{`Sua casa:`}</C.b> {user.casa}</label>
                         </C.Dados>
                         <C.Header>
-                            {console.log("HORARIO LENGTH", )}
                             {(dia[1].horarios[horario].length + 1) >= 3 ? <p>Acompanhante indisponível!</p> : 
                             <>
                             <h6>Levar acompanhante com você?</h6>
@@ -76,7 +75,6 @@ export const Agendar = ({casa, nome, horario, ModalAgenda, dia, checkAgendamento
                         <C.Acomp>
                         </C.Acomp>
                         <C.b>Já reservados neste horário: </C.b>{}
-                        {console.log("DIA",dia)}
                         <C.Dados>{dia[1].horarios[horario].length == 1 && dia[1].horarios[horario][0] == ''? <C.NomeReser empty>Sem reservas até o momento.</C.NomeReser> : (dia[1].horarios[horario].map(nome => <C.NomeReser key={nome}>{nome}</C.NomeReser>))}</C.Dados>
                     </C.Section>
 

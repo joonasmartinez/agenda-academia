@@ -10,7 +10,6 @@ export const Horarios = ({Modal, getData, getHoras}) => {
 
     useEffect(()=>{
         if(getHoras != undefined) {
-            console.log("HORAS",getHoras[1].horarios)
             setData(getHoras); 
             setHorarios(getHoras[1].horarios)
         }

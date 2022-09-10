@@ -52,7 +52,6 @@ function App() {
   const orderByTime = (agenda)=>{
 
     agenda.sort(orderByTimeFunc)
-    console.log(agenda)
     setAgendasOrded(agenda)
   }
 
@@ -61,7 +60,6 @@ function App() {
     orderByTime(agendas)
   },[agendas])
   useEffect(()=>{
-    console.log("AGENDAS", agendasOrded[0])
   },[agendasOrded])
 
   useEffect(()=>{
@@ -172,7 +170,7 @@ function App() {
 
   const isOnAgenda = (horario)=>{
     try{
-      if(agendas[dia].horarios[horario].includes(`${user.nome}, ${user.casa}`)){
+      if(agendas[dia][1].horarios[horario].includes(`${user.nome}, ${user.casa}`)){
         return true;
       }
       return false;
@@ -184,31 +182,30 @@ function App() {
 
   const Agendamento = async (userGym = '', horario)=>{
     
-    console.log(userGym, horario)
-    console.log(agendas[dia][0])
-    runTransaction(ref(databaseRealTime,  'agendas/'+agendas[dia][0]+'/horarios/'+horario), (x)=>{
-      console.log("Current Data", x)
+    // console.log(userGym, horario)
+    // console.log(agendas[dia][0])
+    await runTransaction(ref(databaseRealTime,  'agendas/'+agendas[dia][0]+'/horarios/'+horario), (x)=>{
       const userUpdate = x;
       if(userUpdate[0]=='')userUpdate.length=0;
       if((x.length+userGym.length)<=MAX_USER_PER_HOUR){
-        console.log("PERMITIDO")
         userGym.forEach(i => userUpdate.push(`${i.nome}, ${i.casa}`))
         return userUpdate;
       }else{
         console.log("Limite excedido!")
+        return false
       }
     })
 
   }
 
   const LiberarHorario = async (horario)=>{
-    let getUsers = agendas[dia].horarios[horario]
+    let getUsers = agendas[dia][1].horarios[horario]
     let newUsers = [];
     newUsers.length=0;
 
     getUsers.forEach(item => {if(item.replaceAll(' ', '').split(',')[1] != user.casa){newUsers.push(item)}})
 
-    runTransaction(ref(databaseRealTime,  refAgenda+"/horarios/"+horario), (x)=>{
+    runTransaction(ref(databaseRealTime,  'agendas/'+agendas[dia][0]+'/horarios/'+horario), (x)=>{
         console.log("Current Data", x, newUsers)
         if(x){
 

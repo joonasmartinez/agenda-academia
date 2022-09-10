@@ -1,21 +1,22 @@
 import styled from "styled-components";
 
 export const Organize = styled.div`
-    margin-top: 2%;
+    margin-top: 0%;
     width:100%;
     height:100vh;
     display:flex;
     flex-direction: column;
     align-items:center;
     justify-content:center;
-    /* background-color:grey; */
+    /* background-color:#525252; */
+    /* background-color:#1b495c; */
 `;
 export const horas = styled.h4`
     display:flex;
     align-items:center;
     justify-content:center;
     background-color:white;
-    width:20%;
+    width:400px;
     height:100%;
     max-height: 40px;
     border-radius:10px;

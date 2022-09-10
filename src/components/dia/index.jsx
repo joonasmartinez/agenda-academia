@@ -6,14 +6,13 @@ import { FaArrowCircleRight } from 'react-icons/fa';
 export const Dia = ({getDia, NextDia, PrevDia}) => {
 
     const [dia, setDia] = useState('');
-
     useEffect(()=>{
         try{
-            setDia(getDia.dia)
+            setDia(getDia[0])
             // console.log(getDia.dia)
 
         }catch{
-            setDia(dia)
+            // setDia(dia)
 
         }
     }, [getDia])

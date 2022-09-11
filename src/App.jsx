@@ -6,11 +6,12 @@ import Global from "./GlobalStyles";
 import { Agendar } from './components/agendar';
 import { Registrar } from './components/registrar';
 import { Agendas } from './components/agendas';
+import { Auth } from './components/auth';
 import { db} from './utils/firebase';
 import { databaseRealTime } from './utils/firebase'
 import { getDocs, getDoc, collection, doc, addDoc, deleteDoc, orderBy, setDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { ref, get, child, set, onValue, runTransaction, off, goOffline, update, goOnline, push, remove } from 'firebase/database'
-import { isEmpty } from '@firebase/util';
+import { getAuth, RecaptchaVerifier } from "firebase/auth";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
   const [dia, setDia] = useState(0);
   const MAX_USER_PER_HOUR = 3;
   const [refAgenda, setRefAgenda]= useState(-1);
+  const auth = getAuth();
 
   const carregar = async() => {
     // await getDocs(collection(db, 'agendas')).then(res => {setAgendas([]);res.docs.map(agenda => setAgendas(prev => [...prev, agenda]))})
@@ -109,6 +111,7 @@ function App() {
       setAgendas(Object.entries(snapshot.val()))
       // setAgendasRefOrded(snapshot.val().filter(i => {return i}))
     })
+    
 
   },[])
 
@@ -170,7 +173,7 @@ function App() {
 
   const isOnAgenda = (horario)=>{
     try{
-      if(agendas[dia][1].horarios[horario].includes(`${user.nome}, ${user.casa}`)){
+      if(agendas[dia][1].horarios[horario].includes(`${user.casa}`)){
         return true;
       }
       return false;
@@ -192,7 +195,6 @@ function App() {
         return userUpdate;
       }else{
         console.log("Limite excedido!")
-        return false
       }
     })
 
@@ -244,13 +246,14 @@ function App() {
 
   return (
     <div className="App">
+      <Auth/>
       <Global/>
-      <Header Registrar={editRegister} AdminOpen={OpenAdmin}/>
-      <Dia getDia={agendasOrded[dia]} NextDia={UpDia} PrevDia={DownDia}/>
-      <Horarios Modal={ openModal } getData={getData} getHoras={agendasOrded[dia]}/>
+      {/* <Header Registrar={editRegister} AdminOpen={OpenAdmin}/> */}
+      {/* <Dia getDia={agendasOrded[dia]} NextDia={UpDia} PrevDia={DownDia}/> */}
+      {/* <Horarios Modal={ openModal } getData={getData} getHoras={agendasOrded[dia]}/>
       {isOpenModal ? <Agendar  casa={`${user.casa}`} nome={`${user.nome}`} horario={data} acompanhante={''} ModalAgenda={openModalAgenda} dia={agendasOrded[dia]} checkAgendamento={(userGym, horario)=>Agendamento(userGym, horario)} isOnAgenda={(horario)=>isOnAgenda(horario)} liberarHorario={(horario)=>{LiberarHorario(horario)}}/> : null}
       {register ? <Registrar Registro={ createUser }/> : null}
-      {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)} updateAdminAgenda={(agenda)=>{updateAdminAgenda(agenda)}} pushAdminAgenda={(agenda)=>{pushAdminAgenda(agenda)}} removeAdminAgenda={(agenda)=>{removeAdminAgenda(agenda)}}/> : null}
+      {modalAdmin ? <Agendas Agendas={agendas} onClose={()=>setModalAdmin(false)} updateAdminAgenda={(agenda)=>{updateAdminAgenda(agenda)}} pushAdminAgenda={(agenda)=>{pushAdminAgenda(agenda)}} removeAdminAgenda={(agenda)=>{removeAdminAgenda(agenda)}}/> : null} */}
     </div>
   )
 }

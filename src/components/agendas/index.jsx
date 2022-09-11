@@ -92,7 +92,7 @@ export const Agendas = ({Agendas, onClose, updateAdminAgenda, pushAdminAgenda, r
                     <C.quadroHorario>{Object.keys(agendaToEdit).sort().map((item, index) => <><C.horario key={index} onClick={()=>{updateEdit(item)}}>{item}</C.horario></>)}</C.quadroHorario>
                     <C.Title>Deseja adicionar novo horário? - Clique para adicionar</C.Title>
                     <C.quadroHorario>{Object.keys(horariosToAdd).map((item, index) => {if(!Object.keys(agendaToEdit).includes(item)) {return <C.horario key={index} onClick={()=>{updateEdit(item)}}>{item}</C.horario>}})}</C.quadroHorario>
-                    <C.Button onClick={()=>{UpdateAgenda(agendaToEdit)}}>Confirmar</C.Button>
+                    <C.Button onClick={()=>{UpdateAgenda(agendaToEdit), setCriaron(false);setEditon(false)}}>Confirmar</C.Button>
                     </>
                 )}
                 </>
@@ -107,7 +107,7 @@ export const Agendas = ({Agendas, onClose, updateAdminAgenda, pushAdminAgenda, r
                             {item}
                         </C.horario>)}
                     </C.quadroHorario>
-                    <C.Button onClick={()=>{createAgenda({[nextAgenda().replaceAll(".", '-')]:{horarios:horariosToAdd}})}}>Criar agenda</C.Button>
+                    <C.Button onClick={()=>{createAgenda({[nextAgenda().replaceAll(".", '-')]:{horarios:horariosToAdd}});setCriaron(false);setEditon(false)}}>Criar agenda</C.Button>
                 {msgErro != '' ? <C.Title>{msgErro}</C.Title> : null}
                 
                 </>
